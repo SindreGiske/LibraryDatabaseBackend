@@ -31,14 +31,14 @@ class LoanService(
         return loanRepository.save(loan)
     }
 
-    fun returnBook(loanId: Long) {
+    fun returnBook(loanId: Long): Loan {
         val loan = loanRepository.findById(loanId)
-            .orElseThrow { throw IllegalArgumentException("Loan not found") }
+            .orElseThrow { IllegalArgumentException("Loan $loanId not found") }
 
         loan.returnTime = Timestamp.valueOf(LocalDateTime.now())
         loan.book.returnBook(loan)
 
-        loanRepository.save(loan)
+        return loanRepository.save(loan)
     }
 
 }

@@ -3,8 +3,8 @@ package no.fintlabs.librarydatabasebackend.controller
 import no.fintlabs.librarydatabasebackend.DTO.LoanResponse
 import no.fintlabs.librarydatabasebackend.service.LoanService
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -18,7 +18,7 @@ class LoanController (
     @PostMapping
     fun createLoan(
         @RequestParam bookId: Long,
-        @RequestBody borrowerId: Long,
+        @RequestParam borrowerId: Long,
     ): ResponseEntity<Any> {
         return try {
             val loan = service.registerLoan(bookId, borrowerId)
@@ -28,7 +28,7 @@ class LoanController (
                 bookAuthor = loan.book.author,
                 borrowTime = loan.borrowTime.toString()
             )
-            //Successful loan! Returns status: 200(OK) with additional information
+            //Successful loan returns status: 200(OK) with additional information
             ResponseEntity.ok().body(response)
         } catch (e: IllegalArgumentException) {
             //Book of Borrower not found returns status: 404(Not Found)
@@ -38,4 +38,26 @@ class LoanController (
             ResponseEntity.status(400).body(mapOf("error" to e.message))
         }
     }
+
+    @PatchMapping
+    fun returnBook(
+        @RequestParam loanId: Long
+    ): ResponseEntity<Any> {
+        return try {
+            val loan = service.returnBook(loanId)
+
+            val response = mapOf(
+                "message" to "Book returned Successfully!",
+                "loanId" to loanId,
+                "bookTitle" to loan.book.title,
+                "returnTime" to loan.returnTime.toString()
+            )
+            //Successful return, status 200(OK) with additional information
+            ResponseEntity.ok(response)
+        } catch (e: IllegalArgumentException) {
+            // Loan not found, returns status 400(Bad Request) with additional information from the service
+            ResponseEntity.status(400).body(mapOf("error" to e.message))
+        }
+    }
+
 }

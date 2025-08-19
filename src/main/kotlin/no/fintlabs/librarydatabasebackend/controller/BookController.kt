@@ -11,11 +11,9 @@ import org.springframework.web.bind.annotation.RestController
 class BookController(
     private val service : BookService,
 ) {
-
     @GetMapping("/all")
     fun getAllBooks() = service.getAllBooks()
 
     @GetMapping("/available")
     fun getAvailableBooks() = service.getAvailableBooks()
-
 }
