@@ -15,7 +15,7 @@ class LoanService(
     fun registerLoan(bookId: Long, borrowerId: Long): Loan {
         val book = bookService.findBookById(bookId)
             ?: throw IllegalArgumentException("Book with ID $bookId not found")
-        if (book.loaned == true) throw IllegalArgumentException("Book is currently unavailable")
+        if (book.loaned == true) throw IllegalStateException("Book is currently unavailable")
 
         val borrower = borrowerService.findById(borrowerId)
             ?: throw IllegalArgumentException("Borrower with ID $borrowerId not found")
