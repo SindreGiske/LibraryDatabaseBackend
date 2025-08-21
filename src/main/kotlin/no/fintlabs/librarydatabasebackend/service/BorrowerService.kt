@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service
 class BorrowerService(
     private val repository: BorrowerRepository,
 ) {
+    fun getAllUsers(): List<Borrower> = repository.findAll()
+
     fun findById(id: Long): Borrower? = repository.getBorrowerById(id)
 
     fun getUserByEmail(email: String): Borrower? = repository.getUserByEmail(email)

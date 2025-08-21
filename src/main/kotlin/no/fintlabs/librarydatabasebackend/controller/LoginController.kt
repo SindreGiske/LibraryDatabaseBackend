@@ -21,14 +21,17 @@ class LoginController(
         @RequestParam email: String,
         @RequestParam password: String
     ): ResponseEntity<Any> {
+        println("LoginController.login: $email attempted to log in.")
         val user: Borrower? = service.getUserByEmail(email)
 
         return if (user != null && user.password == password) {
             // Successful Login, return user(without password) and status:200 (OK)
+            println("LoginController.login:200 $email logged inn successfully.")
             val safeUser = user.copy(password = "")
             ResponseEntity.ok().body(safeUser)
         } else {
             // Failed Login, returns status:401 with message
+            println("LoginController.login:401 $email failed to log in.")
             ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body("Invalid username or password")
         }
@@ -40,14 +43,17 @@ class LoginController(
         @RequestParam email: String,
         @RequestParam password: String
     ): ResponseEntity<Any> {
-        return if (service.getUserByEmail(email) != null) {
+        return if (service.getUserByEmail(email) == null) {
+            println("LoginController.createUser:201 $email created a new user.")
             //Successfully created user, returns user(without password) and status:201 (CREATED)
             val newUser: Borrower = (Borrower(name = name, email = email, password = password))
+            println("LoginController.createUser:201 newUser: $newUser.")
             service.registerNew(newUser)
             val safeUser = newUser.copy(password = "")
             ResponseEntity.status(HttpStatus.CREATED).body(safeUser)
         } else {
             //Failed create because email already used, returns status:401 with message
+            println("LoginController.createUser:401, $email failed to create a new user.")
             ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body("A user with this email already exists.")
         }
