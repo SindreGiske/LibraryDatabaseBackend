@@ -24,9 +24,4 @@ class BookService(
     fun findBookByTitle(title: String): Book? = bookRepository.findByTitle(title)
 
     fun findBooksByAuthor(author: String): List<Book?> = bookRepository.findByAuthor(author)
-
-    fun loanBook(title: String) = {
-        val book = bookRepository.findByTitle(title)
-        bookRepository.save(book.loaned = true)
-    }
 }

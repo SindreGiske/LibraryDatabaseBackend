@@ -4,8 +4,6 @@ services:
     environment:
       MYSQL_DATABASE: library
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: Librarian
-      MYSQL_PASSWORD: password123
     ports:
       - "3306:3306"
     volumes:
@@ -16,9 +14,9 @@ services:
     depends_on:
       - mysql
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/library
-      SPRING_DATASOURCE_USERNAME: Librarian
-      SPRING_DATASOURCE_PASSWORD: password123
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/library
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
     ports:
       - "8080:8080"
 
