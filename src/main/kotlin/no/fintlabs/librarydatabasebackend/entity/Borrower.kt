@@ -9,14 +9,15 @@ import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 
 @Entity
-data class Borrower(
+open class Borrower(
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    val id: Long? = null,
-    val name: String,
-    val email: String,
-    val password: String,
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    open val id: Long? = null,
+
+    open var name: String = "",
+    open var email: String = "",
+    open var password: String = "",
 
     @OneToMany(mappedBy = "borrower",  cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    val loans: MutableList<Loan> = mutableListOf(),
+    open val loans: MutableList<Loan> = mutableListOf(),
 )

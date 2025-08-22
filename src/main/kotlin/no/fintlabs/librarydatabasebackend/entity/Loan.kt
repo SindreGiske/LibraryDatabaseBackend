@@ -5,22 +5,24 @@ import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
-import java.sql.Timestamp
 import java.time.LocalDateTime
 
 @Entity
-data class Loan(
+open class Loan(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    open val id: Long? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    val borrower: Borrower,
+    @JoinColumn(name = "borrower_id")
+    open var borrower: Borrower? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    val book: Book,
+    open val book: Book,
 
-    val borrowTime: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
-    var returnTime: Timestamp? = null
+    open val borrowTime: LocalDateTime = LocalDateTime.now(),
+
+    open var returnTime: LocalDateTime? = null
 )
