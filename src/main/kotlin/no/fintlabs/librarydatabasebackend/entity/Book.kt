@@ -10,17 +10,25 @@ import jakarta.persistence.OneToMany
 import java.time.LocalDateTime
 
 @Entity
-open class Book(
+open class Book{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    open val id: Long? = null,
-    open val title: String,
-    open val author: String,
-    open var loaned: Boolean? = false,
+    @Suppress("unused")
+    open val id: Long? = null
+
+    open lateinit var title: String
+    open lateinit var author: String
+    open var loaned: Boolean? = false
 
     @OneToMany(mappedBy = "book", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    open val loans: MutableList<Loan> = mutableListOf(),
-    ) {
+    open val loans: MutableList<Loan> = mutableListOf()
+
+    constructor()
+
+    constructor(title: String, author: String) {
+        this.title = title
+        this.author = author
+    }
 
     fun loanBook(loan: Loan) {
         loans.add(loan)
