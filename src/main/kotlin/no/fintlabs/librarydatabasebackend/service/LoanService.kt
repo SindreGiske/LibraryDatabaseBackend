@@ -3,7 +3,6 @@ package no.fintlabs.librarydatabasebackend.service
 import no.fintlabs.librarydatabasebackend.entity.Loan
 import no.fintlabs.librarydatabasebackend.repository.LoanRepository
 import org.springframework.stereotype.Service
-import java.sql.Timestamp
 import java.time.LocalDateTime
 
 @Service
@@ -23,7 +22,7 @@ class LoanService(
         val loan = Loan(
             book = book,
             borrower = borrower,
-            borrowTime = Timestamp.valueOf(LocalDateTime.now()),
+            borrowTime = LocalDateTime.now(),
         )
         book.loanBook(loan)
         borrower.loans.add(loan)
@@ -35,7 +34,7 @@ class LoanService(
         val loan = loanRepository.findById(loanId)
             .orElseThrow { IllegalArgumentException("Loan $loanId not found") }
 
-        loan.returnTime = Timestamp.valueOf(LocalDateTime.now())
+        loan.returnTime = LocalDateTime.now()
         loan.book.returnBook(loan)
 
         return loanRepository.save(loan)

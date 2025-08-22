@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
+import no.fintlabs.librarydatabasebackend.DTO.UserInfo
 
 @Entity
 open class Borrower(
@@ -20,4 +21,6 @@ open class Borrower(
 
     @OneToMany(mappedBy = "borrower",  cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     open val loans: MutableList<Loan> = mutableListOf(),
-)
+) {
+    fun toDTO() = UserInfo(id!!, name, email)
+}

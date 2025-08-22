@@ -27,7 +27,7 @@ class LoginController(
         return if (user != null && user.password == password) {
             // Successful Login, return user(without password) and status:200 (OK)
             println("LoginController.login:200 $email logged inn successfully.")
-            val safeUser = user.copy(password = "")
+            val safeUser = user.toDTO()
             ResponseEntity.ok().body(safeUser)
         } else {
             // Failed Login, returns status:401 with message
@@ -49,7 +49,7 @@ class LoginController(
             val newUser: Borrower = (Borrower(name = name, email = email, password = password))
             println("LoginController.createUser:201 newUser: $newUser.")
             service.registerNew(newUser)
-            val safeUser = newUser.copy(password = "")
+            val safeUser = newUser.toDTO()
             ResponseEntity.status(HttpStatus.CREATED).body(safeUser)
         } else {
             //Failed create because email already used, returns status:401 with message
