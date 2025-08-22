@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service
 class BookService(
     private val bookRepository: BookRepository
 ) {
-    fun addBook(book: Book) = bookRepository.save(Book(title = book.title, author = book.author))
+    fun addBook(title: String, author: String) =
+        bookRepository.save(Book(title = title, author = author))
 
     fun deleteBook(book: Book) = bookRepository.delete(book)
 
