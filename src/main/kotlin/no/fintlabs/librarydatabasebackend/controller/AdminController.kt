@@ -1,8 +1,11 @@
 package no.fintlabs.librarydatabasebackend.controller
 
+import no.fintlabs.librarydatabasebackend.DTO.BookRequest
 import no.fintlabs.librarydatabasebackend.entity.Borrower
 import no.fintlabs.librarydatabasebackend.service.BookService
 import no.fintlabs.librarydatabasebackend.service.BorrowerService
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -19,8 +22,9 @@ class AdminController (
     fun getAllUsers(): List<Borrower> = borrowers.getAllUsers()
 
     @PostMapping("/book")
-    fun registerNewBook(@RequestBody title: String, author: String) {
-        bookService.addBook(title, author)
+    fun registerNewBook(@RequestBody request: BookRequest): ResponseEntity<String> {
+        bookService.addBook(request.title, request.author)
+        return ResponseEntity("${request.title} by ${request.author} added to Database",
+            HttpStatus.CREATED)
     }
-
 }
