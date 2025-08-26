@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 interface LoanRepository: JpaRepository<Loan, Long> {
 
     fun findByBookTitle(bookTitle: String): Loan?
+
+    fun findByBorrowerId(borrowerId: Long): List<Loan>
 }

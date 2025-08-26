@@ -1,8 +1,10 @@
 package no.fintlabs.librarydatabasebackend.controller
 
-import no.fintlabs.librarydatabasebackend.DTO.LoanResponse
+import no.fintlabs.librarydatabasebackend.DTO.CreateLoanResponse
+import no.fintlabs.librarydatabasebackend.DTO.GetLoanResponse
 import no.fintlabs.librarydatabasebackend.service.LoanService
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -22,11 +24,12 @@ class LoanController (
     ): ResponseEntity<Any> {
         return try {
             val loan = service.registerLoan(bookId, borrowerId)
-            val response = LoanResponse(
+            val response = CreateLoanResponse(
                 loanId = loan.id!!,
                 bookTitle = loan.book.title,
                 bookAuthor = loan.book.author,
-                borrowTime = loan.borrowTime.toString()
+                borrowTime = loan.borrowTime.toString(),
+                returnTime = "",
             )
             //Successful loan returns status: 200(OK) with additional information
             ResponseEntity.ok().body(response)
@@ -60,4 +63,11 @@ class LoanController (
         }
     }
 
+    @GetMapping
+    fun getMyLoans(
+        @RequestParam borrowerId: Long
+    ): List<GetLoanResponse> {
+        return service.getLoansByBorrower(borrowerId)
+
+    }
 }
