@@ -51,7 +51,7 @@ class LoanController (
             ResponseEntity.ok(response)
         } catch (e: IllegalArgumentException) {
             // Loan not found, returns status 400(Bad Request) with additional information from the service
-            ResponseEntity.status(400).body(mapOf("error" to e.message))
+            ResponseEntity.status(400).body(mapOf("Bad Request" to e.message))
         }
     }
 
