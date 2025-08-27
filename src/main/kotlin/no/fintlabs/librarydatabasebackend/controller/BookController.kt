@@ -19,7 +19,7 @@ class BookController(
     fun getAvailableBooks() = service.getAvailableBooks()
 
     @GetMapping("/search")
-    fun getByName(
+    fun searchBooks(
         @RequestParam input: String,
     ) = service.searchBooks(input)
 }
