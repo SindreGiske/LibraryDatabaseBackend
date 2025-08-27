@@ -12,6 +12,9 @@ class BookService(
     fun addBook(title: String, author: String) =
         bookRepository.save(Book(title = title, author = author))
 
+    fun searchBooks(input: String): List<Book> =
+        bookRepository.searchBooksFullText(input)
+
     fun deleteBook(book: Book) = bookRepository.delete(book)
 
     fun getAllBooks(): List<Book> = bookRepository.findAll()
@@ -21,8 +24,6 @@ class BookService(
     fun getAvailableBooks(): List<Book> = bookRepository.listAvailableBooks()
 
     fun findBookById(id: Long): Book? = bookRepository.findByIdOrNull(id)
-
-    fun findBookByTitle(title: String): Book? = bookRepository.findByTitle(title)
 
     fun findBooksByAuthor(author: String): List<Book?> = bookRepository.findByAuthor(author)
 }

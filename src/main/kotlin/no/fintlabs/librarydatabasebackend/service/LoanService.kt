@@ -1,7 +1,7 @@
 package no.fintlabs.librarydatabasebackend.service
 
 import no.fintlabs.librarydatabasebackend.DTO.GetLoanResponse
-import no.fintlabs.librarydatabasebackend.DTO.mappers.toResponse
+import no.fintlabs.librarydatabasebackend.DTO.mappers.toGetResponse
 import no.fintlabs.librarydatabasebackend.entity.Loan
 import no.fintlabs.librarydatabasebackend.repository.LoanRepository
 import org.springframework.stereotype.Service
@@ -44,6 +44,6 @@ class LoanService(
 
     fun getLoansByBorrower(borrowerId: Long): List<GetLoanResponse> {
         val loans: List<Loan> = loanRepository.findByBorrowerId(borrowerId)
-        return loans.map { it.toResponse() }
+        return loans.map { it.toGetResponse() }
     }
 }

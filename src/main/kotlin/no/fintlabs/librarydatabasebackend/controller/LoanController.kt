@@ -1,7 +1,7 @@
 package no.fintlabs.librarydatabasebackend.controller
 
-import no.fintlabs.librarydatabasebackend.DTO.CreateLoanResponse
 import no.fintlabs.librarydatabasebackend.DTO.GetLoanResponse
+import no.fintlabs.librarydatabasebackend.DTO.mappers.toCreateResponse
 import no.fintlabs.librarydatabasebackend.service.LoanService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController
 class LoanController (
     private val service: LoanService,
 ) {
-
     @PostMapping
     fun createLoan(
         @RequestParam bookId: Long,
@@ -24,13 +23,7 @@ class LoanController (
     ): ResponseEntity<Any> {
         return try {
             val loan = service.registerLoan(bookId, borrowerId)
-            val response = CreateLoanResponse(
-                loanId = loan.id!!,
-                bookTitle = loan.book.title,
-                bookAuthor = loan.book.author,
-                borrowTime = loan.borrowTime.toString(),
-                returnTime = "",
-            )
+            val response = loan.toCreateResponse()
             //Successful loan returns status: 200(OK) with additional information
             ResponseEntity.ok().body(response)
         } catch (e: IllegalArgumentException) {
@@ -48,7 +41,6 @@ class LoanController (
     ): ResponseEntity<Any> {
         return try {
             val loan = service.returnBook(loanId)
-
             val response = mapOf(
                 "message" to "Book returned Successfully!",
                 "loanId" to loanId,

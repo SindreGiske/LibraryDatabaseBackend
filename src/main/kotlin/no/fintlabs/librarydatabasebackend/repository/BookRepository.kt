@@ -5,7 +5,15 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 
 interface BookRepository : JpaRepository<Book, Long> {
-    fun findByTitle(title: String): Book?
+
+    @Query(
+        value = """
+            SELECT * FROM book
+            WHERE MATCH(title, author) AGAINST (?1 IN BOOLEAN MODE)
+        """,
+        nativeQuery = true
+    )
+    fun searchBooksFullText(query: String): List<Book>
 
     fun findByAuthor(author: String): List<Book?>
 

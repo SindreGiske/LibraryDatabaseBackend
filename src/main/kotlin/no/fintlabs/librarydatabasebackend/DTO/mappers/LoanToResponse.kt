@@ -1,9 +1,10 @@
 package no.fintlabs.librarydatabasebackend.DTO.mappers
 
+import no.fintlabs.librarydatabasebackend.DTO.CreateLoanResponse
 import no.fintlabs.librarydatabasebackend.DTO.GetLoanResponse
 import no.fintlabs.librarydatabasebackend.entity.Loan
 
-fun Loan.toResponse(): GetLoanResponse = GetLoanResponse(
+fun Loan.toGetResponse(): GetLoanResponse = GetLoanResponse(
     loanId = this.id!!,
     borrowerEmail = this.borrower!!.email,
     bookTitle = this.book.title,
@@ -12,3 +13,10 @@ fun Loan.toResponse(): GetLoanResponse = GetLoanResponse(
     returnTime = this.returnTime.toString(),
 )
 
+fun Loan.toCreateResponse(): CreateLoanResponse = CreateLoanResponse(
+    loanId = this.id!!,
+    bookTitle = this.book.title,
+    bookAuthor = this.book.author,
+    borrowTime = this.borrowTime.toString(),
+    returnTime = "",
+)

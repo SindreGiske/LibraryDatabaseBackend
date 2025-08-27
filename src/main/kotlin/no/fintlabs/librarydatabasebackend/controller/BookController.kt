@@ -16,4 +16,7 @@ class BookController(
 
     @GetMapping("/available")
     fun getAvailableBooks() = service.getAvailableBooks()
+
+    @GetMapping("/search")
+    fun getByName(input: String) = service.searchBooks(input)
 }
