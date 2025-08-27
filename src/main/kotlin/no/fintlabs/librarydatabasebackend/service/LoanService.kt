@@ -1,6 +1,6 @@
 package no.fintlabs.librarydatabasebackend.service
 
-import no.fintlabs.librarydatabasebackend.DTO.GetLoanResponse
+import no.fintlabs.librarydatabasebackend.DTO.response.GetLoanResponse
 import no.fintlabs.librarydatabasebackend.DTO.mappers.toGetResponse
 import no.fintlabs.librarydatabasebackend.entity.Loan
 import no.fintlabs.librarydatabasebackend.repository.LoanRepository

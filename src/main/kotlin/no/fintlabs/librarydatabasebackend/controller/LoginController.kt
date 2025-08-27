@@ -1,7 +1,7 @@
 package no.fintlabs.librarydatabasebackend.controller
 
-import no.fintlabs.librarydatabasebackend.DTO.CreateUserRequest
-import no.fintlabs.librarydatabasebackend.DTO.LoginRequest
+import no.fintlabs.librarydatabasebackend.DTO.request.CreateUserRequest
+import no.fintlabs.librarydatabasebackend.DTO.request.LoginRequest
 import no.fintlabs.librarydatabasebackend.entity.Borrower
 import no.fintlabs.librarydatabasebackend.service.BorrowerService
 import org.springframework.http.HttpStatus
@@ -22,17 +22,19 @@ class LoginController(
     fun login(
         @RequestBody request: LoginRequest
     ): ResponseEntity<Any> {
-        println("LoginController.login: ${request.email} attempted to log in.")
-        val user: Borrower? = service.getUserByEmail(request.email)
+        val email = request.email
+        val password = request.password
+        println("LoginController.login: $email attempted to log in.")
+        val user: Borrower? = service.getUserByEmail(email)
 
-        return if (user != null && user.password == request.password) {
+        return if (user != null && user.password == password) {
             // Successful Login, return user(without password) and status:200 (OK)
-            println("LoginController.login:200 ${request.email} logged inn successfully.")
+            println("LoginController.login:200 $email logged inn successfully.")
             val safeUser = user.toDTO()
             ResponseEntity.ok().body(safeUser)
         } else {
             // Failed Login, returns status:401 with message
-            println("LoginController.login:401 ${request.email} failed to log in.")
+            println("LoginController.login:401 $email failed to log in.")
             ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body("Invalid username or password")
         }

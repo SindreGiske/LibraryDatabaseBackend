@@ -7,7 +7,7 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
-import no.fintlabs.librarydatabasebackend.DTO.UserInfo
+import no.fintlabs.librarydatabasebackend.DTO.response.UserInfo
 
 @Entity
 open class Borrower(

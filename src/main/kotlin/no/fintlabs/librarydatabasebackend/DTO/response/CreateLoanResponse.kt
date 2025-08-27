@@ -1,4 +1,4 @@
-package no.fintlabs.librarydatabasebackend.DTO
+package no.fintlabs.librarydatabasebackend.DTO.response
 
 data class CreateLoanResponse(
     val loanId: Long,

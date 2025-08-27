@@ -1,6 +1,6 @@
 package no.fintlabs.librarydatabasebackend.controller
 
-import no.fintlabs.librarydatabasebackend.DTO.BookRequest
+import no.fintlabs.librarydatabasebackend.DTO.request.BookRequest
 import no.fintlabs.librarydatabasebackend.entity.Borrower
 import no.fintlabs.librarydatabasebackend.service.BookService
 import no.fintlabs.librarydatabasebackend.service.BorrowerService

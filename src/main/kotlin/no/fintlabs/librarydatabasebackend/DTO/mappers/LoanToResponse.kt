@@ -1,7 +1,7 @@
 package no.fintlabs.librarydatabasebackend.DTO.mappers
 
-import no.fintlabs.librarydatabasebackend.DTO.CreateLoanResponse
-import no.fintlabs.librarydatabasebackend.DTO.GetLoanResponse
+import no.fintlabs.librarydatabasebackend.DTO.response.CreateLoanResponse
+import no.fintlabs.librarydatabasebackend.DTO.response.GetLoanResponse
 import no.fintlabs.librarydatabasebackend.entity.Loan
 
 fun Loan.toGetResponse(): GetLoanResponse = GetLoanResponse(
