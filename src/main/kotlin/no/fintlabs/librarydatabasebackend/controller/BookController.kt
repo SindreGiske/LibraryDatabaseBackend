@@ -2,8 +2,8 @@ package no.fintlabs.librarydatabasebackend.controller
 
 import no.fintlabs.librarydatabasebackend.service.BookService
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 
@@ -20,6 +20,6 @@ class BookController(
 
     @GetMapping("/search")
     fun searchBooks(
-        @RequestParam input: String,
+        @RequestBody input: String,
     ) = service.searchBooks(input)
 }

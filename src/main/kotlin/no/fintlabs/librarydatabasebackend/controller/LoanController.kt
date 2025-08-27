@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -40,7 +39,7 @@ class LoanController (
 
     @PatchMapping
     fun returnBook(
-        @RequestParam loanId: Long
+        @RequestBody loanId: Long
     ): ResponseEntity<Any> {
         return try {
             val loan = service.returnBook(loanId)
@@ -60,7 +59,7 @@ class LoanController (
 
     @GetMapping
     fun getMyLoans(
-        @RequestParam borrowerId: Long
+        @RequestBody borrowerId: Long
     ): List<GetLoanResponse> {
         return service.getLoansByBorrower(borrowerId)
 
