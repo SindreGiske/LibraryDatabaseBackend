@@ -10,7 +10,7 @@ import jakarta.persistence.OneToMany
 import no.fintlabs.librarydatabasebackend.DTO.response.UserInfo
 
 @Entity
-open class Borrower(
+open class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     open val id: Long? = null,
@@ -18,9 +18,10 @@ open class Borrower(
     open var name: String = "",
     open var email: String = "",
     open var password: String = "",
+    val adminId: Int? = null,
 
-    @OneToMany(mappedBy = "borrower",  cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user",  cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     open val loans: MutableList<Loan> = mutableListOf(),
 ) {
-    fun toDTO() = UserInfo(id!!, name, email)
+    fun toDTO() = UserInfo(id!!, name, email, adminId)
 }
