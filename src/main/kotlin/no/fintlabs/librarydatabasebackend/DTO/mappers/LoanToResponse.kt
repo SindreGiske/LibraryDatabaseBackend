@@ -6,7 +6,7 @@ import no.fintlabs.librarydatabasebackend.entity.Loan
 
 fun Loan.toGetResponse(): GetLoanResponse = GetLoanResponse(
     loanId = this.id!!,
-    borrowerEmail = this.borrower!!.email,
+    borrowerEmail = this.user!!.email,
     bookTitle = this.book.title,
     bookAuthor = this.book.author,
     borrowTime = this.borrowTime.toString(),
