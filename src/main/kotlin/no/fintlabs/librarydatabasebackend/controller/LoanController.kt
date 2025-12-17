@@ -22,9 +22,9 @@ class LoanController (
         @RequestBody request: CreateLoanRequest
     ): ResponseEntity<Any> {
         val bookId = request.bookId
-        val borrowerId = request.borrowerId
+        val userId = request.userId
         return try {
-            val loan = service.registerLoan(bookId, borrowerId)
+            val loan = service.registerLoan(bookId, userId)
             val response = loan.toCreateResponse()
             //Successful loan returns status: 200(OK) with additional information
             ResponseEntity.ok().body(response)
@@ -59,9 +59,9 @@ class LoanController (
 
     @GetMapping
     fun getMyLoans(
-        @RequestBody borrowerId: Long
+        @RequestBody userId: Long
     ): List<GetLoanResponse> {
-        return service.getLoansByBorrower(borrowerId)
+        return service.getLoansByUser(userId)
 
     }
 }

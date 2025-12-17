@@ -10,11 +10,11 @@ open class Loan(
     open val id: Long? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "borrower_id")
-    open var borrower: Borrower? = null,
+    @JoinColumn(name = "user_id")
+    open var user: User? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    open val book: Book,
+    open var book: Book = Book(),
 
     open val borrowTime: LocalDateTime = LocalDateTime.now(),
 

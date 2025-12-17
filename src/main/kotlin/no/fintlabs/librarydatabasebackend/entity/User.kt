@@ -18,10 +18,14 @@ open class User(
     open var name: String = "",
     open var email: String = "",
     open var password: String = "",
-    val adminId: Int? = null,
+    open var admin: Boolean = false,
 
     @OneToMany(mappedBy = "user",  cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     open val loans: MutableList<Loan> = mutableListOf(),
 ) {
-    fun toDTO() = UserInfo(id!!, name, email, adminId)
+    fun toDTO() = UserInfo(id!!, name, email, admin = admin)
+
+    fun makeAdmin() {
+        admin = true
+    }
 }
