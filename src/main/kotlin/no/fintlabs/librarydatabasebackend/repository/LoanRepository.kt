@@ -7,5 +7,5 @@ interface LoanRepository: JpaRepository<Loan, Long> {
 
     fun findByBookTitle(bookTitle: String): Loan?
 
-    fun findByBorrowerId(borrowerId: Long): List<Loan>
+    fun findByUserId(userId: Long): List<Loan>
 }

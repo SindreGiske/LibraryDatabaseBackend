@@ -3,17 +3,16 @@ package no.fintlabs.librarydatabasebackend.repository
 import no.fintlabs.librarydatabasebackend.entity.Book
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.query.Param
 
 interface BookRepository : JpaRepository<Book, Long> {
 
-    @Query(
-        value = """
-            SELECT * FROM book
-            WHERE MATCH(title, author) AGAINST (?1 IN BOOLEAN MODE)
-        """,
-        nativeQuery = true
-    )
-    fun searchBooksFullText(query: String): List<Book>
+    @Query("""
+        SELECT b FROM Book b
+        WHERE lower(b.title) LIKE lower(concat('%', :query, '%'))
+           OR lower(b.author) LIKE lower(concat('%', :query, '%'))
+    """)
+    fun search(@Param("query") query: String): List<Book>
 
     fun findByAuthor(author: String): List<Book?>
 
