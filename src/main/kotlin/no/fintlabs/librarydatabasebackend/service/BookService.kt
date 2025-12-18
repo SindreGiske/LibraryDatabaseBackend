@@ -23,7 +23,7 @@ class BookService(
 
     fun getAvailableBooks(): List<Book> = bookRepository.listAvailableBooks()
 
-    fun findBookById(id: Long): Book? = bookRepository.findByIdOrNull(id)
+    fun findById(id: Long): Book? = bookRepository.findByIdOrNull(id)
 
     fun findBooksByAuthor(author: String): List<Book?> = bookRepository.findByAuthor(author)
 }
