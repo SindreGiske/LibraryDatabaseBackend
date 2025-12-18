@@ -5,5 +5,4 @@ data class CreateLoanResponse(
     val bookTitle: String,
     val bookAuthor: String,
     val borrowTime: String,
-    val returnTime: String,
 )

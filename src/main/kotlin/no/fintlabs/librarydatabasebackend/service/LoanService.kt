@@ -1,7 +1,7 @@
 package no.fintlabs.librarydatabasebackend.service
 
-import no.fintlabs.librarydatabasebackend.DTO.response.GetLoanResponse
-import no.fintlabs.librarydatabasebackend.DTO.mappers.toGetResponse
+import no.fintlabs.librarydatabasebackend.DTO.mappers.allLoansToResponse
+import no.fintlabs.librarydatabasebackend.DTO.response.GetAllLoansResponse
 import no.fintlabs.librarydatabasebackend.entity.Loan
 import no.fintlabs.librarydatabasebackend.repository.LoanRepository
 import org.springframework.stereotype.Service
@@ -14,16 +14,17 @@ class LoanService(
     private val userService: UserService,
 ) {
     fun registerLoan(bookId: Long, userId: Long): Loan {
-        val book = bookService.findBookById(bookId)
+        val book = bookService.findById(bookId)
             ?: throw IllegalArgumentException("Book with ID $bookId not found")
         if (book.loaned == true) throw IllegalStateException("Book is currently unavailable")
 
         val user = userService.findById(userId)
-            ?: throw IllegalArgumentException("Borrower with ID $userId not found")
+            ?: throw IllegalArgumentException("User with ID $userId not found")
 
         val loan = Loan(
             book = book,
             user = user,
+            username = user.name,
             borrowTime = LocalDateTime.now(),
         )
         book.loanBook(loan)
@@ -32,19 +33,23 @@ class LoanService(
         return loanRepository.save(loan)
     }
 
-    fun returnBook(loanId: Long): Loan {
+    fun returnBook(userId: Long, loanId: Long): Loan {
         val loan = loanRepository.findById(loanId)
             .orElseThrow { IllegalArgumentException("Loan $loanId not found") }
+        val user = userService.findById(userId)
+            ?: throw IllegalArgumentException("User with ID $userId not found")
 
-        loan.returnTime = LocalDateTime.now()
-        loan.book.returnBook(loan)
-        loan.user?.loans?.remove(loan)
+        user.loans[loanId.toInt()].returnTime = LocalDateTime.now()
+        loan.book.returnBook()
 
+        loan.user = null
         return loanRepository.save(loan)
     }
 
-    fun getLoansByUser(userId: Long): List<GetLoanResponse> {
+    fun getLoansByUser(userId: Long): GetAllLoansResponse {
         val loans: List<Loan> = loanRepository.findByUserId(userId)
-        return loans.map { it.toGetResponse() }
+        return allLoansToResponse(loans)
     }
+
+    fun getAllLoans(): List<Loan> = loanRepository.findAll()
 }

@@ -1,8 +1,8 @@
 package no.fintlabs.librarydatabasebackend.controller
 
-import no.fintlabs.librarydatabasebackend.DTO.response.GetLoanResponse
 import no.fintlabs.librarydatabasebackend.DTO.mappers.toCreateResponse
 import no.fintlabs.librarydatabasebackend.DTO.request.CreateLoanRequest
+import no.fintlabs.librarydatabasebackend.DTO.response.GetAllLoansResponse
 import no.fintlabs.librarydatabasebackend.service.LoanService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -29,7 +30,7 @@ class LoanController (
             //Successful loan returns status: 200(OK) with additional information
             ResponseEntity.ok().body(response)
         } catch (e: IllegalArgumentException) {
-            //Book of Borrower not found returns status: 404(Not Found)
+            //Book of User not found returns status: 404(Not Found)
             ResponseEntity.status(404).body(mapOf("error" to e.message))
         } catch (e: IllegalStateException) {
             // Book already loaned returns status: 400(Bad Request)
@@ -37,12 +38,13 @@ class LoanController (
         }
     }
 
-    @PatchMapping
+    @PatchMapping("/return")
     fun returnBook(
-        @RequestBody loanId: Long
+        @RequestParam userId: Long,
+        @RequestParam loanId: Long,
     ): ResponseEntity<Any> {
         return try {
-            val loan = service.returnBook(loanId)
+            val loan = service.returnBook(userId, loanId)
             val response = mapOf(
                 "message" to "Book returned Successfully!",
                 "loanId" to loanId,
@@ -57,11 +59,10 @@ class LoanController (
         }
     }
 
-    @GetMapping
+    @GetMapping("/getMyLoans")
     fun getMyLoans(
-        @RequestBody userId: Long
-    ): List<GetLoanResponse> {
+        @RequestParam userId: Long
+    ): GetAllLoansResponse {
         return service.getLoansByUser(userId)
-
     }
 }

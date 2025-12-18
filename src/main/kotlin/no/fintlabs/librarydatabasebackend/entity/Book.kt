@@ -7,7 +7,6 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
-import java.time.LocalDateTime
 
 @Entity
 open class Book{
@@ -35,8 +34,7 @@ open class Book{
         loaned = true
     }
 
-    fun returnBook(loan: Loan) {
-        loans.find { it.id == loan.id }?.let { it.returnTime = LocalDateTime.now() }
+    fun returnBook() {
         loaned = false
     }
 }

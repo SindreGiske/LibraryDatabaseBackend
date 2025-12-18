@@ -13,6 +13,8 @@ open class Loan(
     @JoinColumn(name = "user_id")
     open var user: User? = null,
 
+    open var username: String? = null,
+
     @ManyToOne(fetch = FetchType.LAZY)
     open var book: Book = Book(),
 
