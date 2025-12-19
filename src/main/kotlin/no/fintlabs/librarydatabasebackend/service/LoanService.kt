@@ -39,8 +39,8 @@ class LoanService(
         val user = userService.findById(userId)
             ?: throw IllegalArgumentException("User with ID $userId not found")
 
-        user.loans[loanId.toInt()].returnTime = LocalDateTime.now()
-        loan.book.returnBook()
+        loan.returnTime = LocalDateTime.now()
+        loan.book!!.returnBook()
 
         loan.user = null
         return loanRepository.save(loan)

@@ -11,8 +11,8 @@ fun Loan.toGetResponse(): GetLoanResponse {
     return GetLoanResponse(
     loanId = this.id!!,
     username = this.user!!.name,
-    bookTitle = this.book.title,
-    bookAuthor = this.book.author,
+    bookTitle = this.book!!.title,
+    bookAuthor = this.book!!.author,
     borrowTime = this.borrowTime.toString(),
     returnTime = returnTimeString,
 )
@@ -20,8 +20,8 @@ fun Loan.toGetResponse(): GetLoanResponse {
 
 fun Loan.toCreateResponse(): CreateLoanResponse = CreateLoanResponse(
     loanId = this.id!!,
-    bookTitle = this.book.title,
-    bookAuthor = this.book.author,
+    bookTitle = this.book!!.title,
+    bookAuthor = this.book!!.author,
     borrowTime = this.borrowTime.toString(),
 )
 

@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 open class Loan(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    open val id: Long? = null,
+    open var id: Long? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -16,7 +16,7 @@ open class Loan(
     open var username: String? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    open var book: Book = Book(),
+    open var book: Book? = null,
 
     open val borrowTime: LocalDateTime = LocalDateTime.now(),
 

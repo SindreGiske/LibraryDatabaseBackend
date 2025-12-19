@@ -48,7 +48,7 @@ class LoanController (
             val response = mapOf(
                 "message" to "Book returned Successfully!",
                 "loanId" to loanId,
-                "bookTitle" to loan.book.title,
+                "bookTitle" to loan.book!!.title,
                 "returnTime" to loan.returnTime.toString()
             )
             //Successful return, status 200(OK) with additional information
