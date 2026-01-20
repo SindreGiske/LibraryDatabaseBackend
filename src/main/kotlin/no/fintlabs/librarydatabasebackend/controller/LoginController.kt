@@ -75,7 +75,6 @@ class LoginController(
                 return ResponseEntity(HttpStatus.GONE)
             }
         }
-        // If user was not found, return 404 not found
         else return ResponseEntity(HttpStatus.NOT_FOUND)
     }
 }

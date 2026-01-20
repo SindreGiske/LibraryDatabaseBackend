@@ -2,7 +2,6 @@ package no.fintlabs.librarydatabasebackend.service
 
 import no.fintlabs.librarydatabasebackend.entity.Book
 import no.fintlabs.librarydatabasebackend.repository.BookRepository
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
@@ -24,6 +23,4 @@ class BookService(
     fun getAvailableBooks(): List<Book> = bookRepository.listAvailableBooks()
 
     fun findById(id: Long): Book? = bookRepository.getBookById(id)
-
-    fun findBooksByAuthor(author: String): List<Book?> = bookRepository.findByAuthor(author)
 }

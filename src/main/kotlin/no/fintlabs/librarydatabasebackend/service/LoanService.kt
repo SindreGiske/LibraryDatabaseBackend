@@ -51,5 +51,5 @@ class LoanService(
         return allLoansToResponse(loans)
     }
 
-    fun getAllLoans(): List<Loan> = loanRepository.findAll()
+    fun findLoanById(id: Long): Loan? = loanRepository.findLoanById(id)
 }

@@ -10,7 +10,7 @@ fun Loan.toGetResponse(): GetLoanResponse {
 
     return GetLoanResponse(
     loanId = this.id!!,
-    username = this.user!!.name,
+    username = this.user?.name ?: username!!,
     bookTitle = this.book!!.title,
     bookAuthor = this.book!!.author,
     borrowTime = this.borrowTime.toString(),

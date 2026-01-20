@@ -3,6 +3,7 @@ package no.fintlabs.librarydatabasebackend.controller
 import no.fintlabs.librarydatabasebackend.DTO.mappers.toCreateResponse
 import no.fintlabs.librarydatabasebackend.DTO.request.CreateLoanRequest
 import no.fintlabs.librarydatabasebackend.DTO.response.GetAllLoansResponse
+import no.fintlabs.librarydatabasebackend.entity.Loan
 import no.fintlabs.librarydatabasebackend.service.LoanService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -30,7 +31,7 @@ class LoanController (
             //Successful loan returns status: 200(OK) with additional information
             ResponseEntity.ok().body(response)
         } catch (e: IllegalArgumentException) {
-            //Book of User not found returns status: 404(Not Found)
+            //Book or User not found returns status: 404(Not Found)
             ResponseEntity.status(404).body(mapOf("error" to e.message))
         } catch (e: IllegalStateException) {
             // Book already loaned returns status: 400(Bad Request)

@@ -14,8 +14,6 @@ interface BookRepository : JpaRepository<Book, Long> {
     """)
     fun search(@Param("query") query: String): List<Book>
 
-    fun findByAuthor(author: String): List<Book?>
-
     fun getBookById(bookId: Long): Book?
 
     @Query("SELECT b FROM Book b WHERE b.loaned = true")
