@@ -17,6 +17,17 @@ import org.springframework.web.bind.annotation.RestController
 class AdminController (
     private val service: AdminService,
 ) {
+    @PostMapping("/registerNewBook")
+    fun registerNewBook(@RequestBody request: BookRequest): ResponseEntity<String> {
+        if (!service.validateAdmin(request.userId)) return ResponseEntity(HttpStatus.UNAUTHORIZED)
+
+        val response: Boolean = service.registerNewBook(request.title, request.author)
+        return if (response)
+            ResponseEntity("${request.title} by ${request.author} added to Database",
+                HttpStatus.CREATED)
+        else ResponseEntity("Book already exists in database", HttpStatus.BAD_REQUEST)
+    }
+
     @GetMapping("/getUsers")
     fun getAllUsers(
         @RequestBody userId: Long
@@ -28,17 +39,6 @@ class AdminController (
         }
     }
 
-    @PostMapping("/registerNewBook")
-    fun registerNewBook(@RequestBody request: BookRequest): ResponseEntity<String> {
-        if (!service.validateAdmin(request.userId)) return ResponseEntity(HttpStatus.UNAUTHORIZED)
-
-        val response: Boolean = service.registerNewBook(request.title, request.author)
-        return if (response)
-            ResponseEntity("${request.title} by ${request.author} added to Database",
-             HttpStatus.CREATED)
-        else ResponseEntity("Book already exists in database", HttpStatus.BAD_REQUEST)
-    }
-
     @PatchMapping("/addAdmin")
     fun setAnotherUserAsAdmin(
         @RequestBody
@@ -47,5 +47,13 @@ class AdminController (
         ): HttpStatus {
         return if (!service.validateAdmin(selfId)) HttpStatus.UNAUTHORIZED
         else service.addAdmin(subjectId)
+    }
+
+    @GetMapping("/getAllLoans")
+    fun getAllLoans(
+        @RequestBody userId: Long
+    ): ResponseEntity<Any> {
+        return (if (!service.validateAdmin(userId)) ResponseEntity("", HttpStatus.UNAUTHORIZED)
+        else ResponseEntity(service.getAllLoans(), HttpStatus.OK) )
     }
 }

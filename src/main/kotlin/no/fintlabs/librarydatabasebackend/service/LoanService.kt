@@ -52,4 +52,6 @@ class LoanService(
     }
 
     fun findLoanById(id: Long): Loan? = loanRepository.findLoanById(id)
+
+    fun getAllLoans(): List<Loan> = loanRepository.findAll()
 }

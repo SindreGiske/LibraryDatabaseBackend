@@ -1,12 +1,14 @@
 package no.fintlabs.librarydatabasebackend.service
 
 import jakarta.transaction.Transactional
+import no.fintlabs.librarydatabasebackend.entity.Loan
 import no.fintlabs.librarydatabasebackend.entity.User
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 
 @Service
 class AdminService(
+    private val loans: LoanService,
     private val users: UserService,
     private val books: BookService
 ) {
@@ -40,5 +42,9 @@ class AdminService(
             val theAdmin = User(name = "admin", email = "adminMail", password = "admin123", admin = true)
 
             users.registerNew(theAdmin)
+    }
+
+    fun getAllLoans(): List<Loan> {
+        return loans.getAllLoans()
     }
 }
