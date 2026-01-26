@@ -1,5 +1,6 @@
 package no.fintlabs.librarydatabasebackend.controller
 
+import no.fintlabs.librarydatabasebackend.DTO.response.BookResponse
 import no.fintlabs.librarydatabasebackend.service.BookService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -12,7 +13,12 @@ class BookController(
     private val service : BookService,
 ) {
     @GetMapping("/all")
-    fun getAllBooks() = service.getAllBooks()
+    fun getAllBooks(): List<BookResponse> {
+    val books: List<BookResponse> = service.getAllBooks()
+
+        println(books)
+        return books
+    }
 
     @GetMapping("/available")
     fun getAvailableBooks() = service.getAvailableBooks()

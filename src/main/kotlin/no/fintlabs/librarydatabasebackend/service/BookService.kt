@@ -1,5 +1,6 @@
 package no.fintlabs.librarydatabasebackend.service
 
+import no.fintlabs.librarydatabasebackend.DTO.response.BookResponse
 import no.fintlabs.librarydatabasebackend.entity.Book
 import no.fintlabs.librarydatabasebackend.repository.BookRepository
 import org.springframework.stereotype.Service
@@ -16,7 +17,12 @@ class BookService(
 
     fun deleteBook(book: Book) = bookRepository.delete(book)
 
-    fun getAllBooks(): List<Book> = bookRepository.findAll()
+    fun getAllBooks(): List<BookResponse> {
+    val books = bookRepository.findAll()
+        return books.map { book -> book.toResponse() }
+    }
+
+    fun getAllBooksRaw(): List<Book> = bookRepository.findAll()
 
     fun getLoanedBooks(): List<Book> = bookRepository.listLoaned()
 

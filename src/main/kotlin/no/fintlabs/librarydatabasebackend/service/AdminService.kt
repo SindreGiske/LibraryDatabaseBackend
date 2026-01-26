@@ -1,6 +1,7 @@
 package no.fintlabs.librarydatabasebackend.service
 
 import jakarta.transaction.Transactional
+import no.fintlabs.librarydatabasebackend.DTO.response.BookAdminResponse
 import no.fintlabs.librarydatabasebackend.entity.Loan
 import no.fintlabs.librarydatabasebackend.entity.User
 import org.springframework.http.HttpStatus
@@ -24,6 +25,8 @@ class AdminService(
         }
         else return false
     }
+
+    fun getAllBooksWithLoans(): List<BookAdminResponse> = books.getAllBooksRaw().map { it.toAdminResponse() }
 
     fun addAdmin(userId: Long): HttpStatus {
         val user: User? = users.findById(userId)

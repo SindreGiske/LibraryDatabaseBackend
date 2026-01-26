@@ -39,6 +39,22 @@ class AdminController (
         }
     }
 
+    @GetMapping("/getAllLoans")
+    fun getAllLoans(
+        @RequestBody userId: Long
+    ): ResponseEntity<Any> {
+        return (if (!service.validateAdmin(userId)) ResponseEntity("", HttpStatus.UNAUTHORIZED)
+        else ResponseEntity(service.getAllLoans(), HttpStatus.OK) )
+    }
+
+    @GetMapping("/getAllBooks")
+    fun getAllBooksWithLoans(
+        @RequestBody userId: Long
+    ): ResponseEntity<Any> {
+        return if (!service.validateAdmin(userId)) ResponseEntity("", HttpStatus.UNAUTHORIZED)
+        else ResponseEntity(service.getAllBooksWithLoans(), HttpStatus.OK)
+    }
+
     @PatchMapping("/addAdmin")
     fun setAnotherUserAsAdmin(
         @RequestBody
@@ -49,11 +65,5 @@ class AdminController (
         else service.addAdmin(subjectId)
     }
 
-    @GetMapping("/getAllLoans")
-    fun getAllLoans(
-        @RequestBody userId: Long
-    ): ResponseEntity<Any> {
-        return (if (!service.validateAdmin(userId)) ResponseEntity("", HttpStatus.UNAUTHORIZED)
-        else ResponseEntity(service.getAllLoans(), HttpStatus.OK) )
-    }
+
 }
