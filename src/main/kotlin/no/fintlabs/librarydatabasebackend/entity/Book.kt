@@ -8,7 +8,6 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import no.fintlabs.librarydatabasebackend.DTO.mappers.allLoansToResponse
-import no.fintlabs.librarydatabasebackend.DTO.mappers.toGetResponse
 import no.fintlabs.librarydatabasebackend.DTO.response.BookAdminResponse
 import no.fintlabs.librarydatabasebackend.DTO.response.BookResponse
 
