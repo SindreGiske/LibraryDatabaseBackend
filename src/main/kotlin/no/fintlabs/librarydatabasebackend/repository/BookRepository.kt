@@ -4,8 +4,9 @@ import no.fintlabs.librarydatabasebackend.entity.Book
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
+import java.util.UUID
 
-interface BookRepository : JpaRepository<Book, Long> {
+interface BookRepository : JpaRepository<Book, UUID> {
 
     @Query("""
         SELECT b FROM Book b
@@ -14,7 +15,7 @@ interface BookRepository : JpaRepository<Book, Long> {
     """)
     fun search(@Param("query") query: String): List<Book>
 
-    fun getBookById(bookId: Long): Book?
+    fun getBookById(bookId: UUID): Book?
 
     @Query("SELECT b FROM Book b WHERE b.loaned = true")
     fun listLoaned(): List<Book>
