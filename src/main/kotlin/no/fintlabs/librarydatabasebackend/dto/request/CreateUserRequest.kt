@@ -1,4 +1,4 @@
-package no.fintlabs.librarydatabasebackend.DTO.request
+package no.fintlabs.librarydatabasebackend.dto.request
 
 data class CreateUserRequest (
     val name: String,
