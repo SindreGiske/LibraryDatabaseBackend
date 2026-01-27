@@ -9,17 +9,15 @@ open class Loan(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     open var id: Long? = null,
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    open var user: User? = null,
-
     open var username: String? = null,
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    open var book: Book? = null,
+    open val bookId: Long,
+    open val title: String,
+    open val author: String,
 
     open val borrowTime: LocalDateTime = LocalDateTime.now(),
+    open var returnTime: LocalDateTime? = null,
 
-    open var returnTime: LocalDateTime? = null
+    open var active: Boolean = returnTime != null,
 )
 

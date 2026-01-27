@@ -1,31 +1,37 @@
 package no.fintlabs.librarydatabasebackend.entity
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
-import no.fintlabs.librarydatabasebackend.DTO.response.UserInfo
+import java.util.UUID
 
 @Entity
 open class User(
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    open val id: Long? = null,
+    open val id: UUID,
 
     open var name: String = "",
     open var email: String = "",
-    open var password: String = "",
+
+    @JsonIgnore
+    private var password: String = "",
     open var admin: Boolean = false,
 
     @OneToMany(mappedBy = "user",  cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     open val loans: MutableList<Loan> = mutableListOf(),
 ) {
-    fun toDTO() = UserInfo(id!!, name, email, admin = admin)
+    constructor(name: String, email: String, password: String, admin: Boolean?) :
+            this(UUID.randomUUID(), name, email, password, admin?: false)
 
     fun makeAdmin() {
         admin = true
+    }
+
+    fun validatePassword(input: String): Boolean {
+        return input == password
     }
 }
