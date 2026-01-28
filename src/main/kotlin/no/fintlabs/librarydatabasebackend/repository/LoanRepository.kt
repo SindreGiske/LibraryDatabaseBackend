@@ -4,9 +4,8 @@ import no.fintlabs.librarydatabasebackend.entity.Loan
 import org.springframework.data.jpa.repository.JpaRepository
 import java.util.UUID
 
-interface LoanRepository: JpaRepository<Loan, UUID> {
-
+interface LoanRepository : JpaRepository<Loan, UUID> {
     fun findByUsername(username: String): List<Loan>
 
-    fun findLoanById(loanId: Long): Loan?
+    fun findLoanById(loanId: UUID): Loan?
 }

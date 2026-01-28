@@ -1,8 +1,5 @@
 package no.fintlabs.librarydatabasebackend.controller
 
-import no.fintlabs.librarydatabasebackend.DTO.mappers.toCreateResponse
-import no.fintlabs.librarydatabasebackend.DTO.request.CreateLoanRequest
-import no.fintlabs.librarydatabasebackend.DTO.response.GetAllLoansResponse
 import no.fintlabs.librarydatabasebackend.entity.Loan
 import no.fintlabs.librarydatabasebackend.service.LoanService
 import org.springframework.http.ResponseEntity
@@ -13,46 +10,46 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
 
 @RestController
 @RequestMapping("/loan")
-class LoanController (
+class LoanController(
     private val service: LoanService,
 ) {
     @PostMapping
     fun createLoan(
-        @RequestBody request: CreateLoanRequest
-    ): ResponseEntity<Any> {
-        val bookId = request.bookId
-        val userId = request.userId
-        return try {
+        @RequestBody userId: UUID,
+        @RequestParam bookId: UUID,
+    ): ResponseEntity<Any> =
+        try {
             val loan = service.registerLoan(bookId, userId)
-            val response = loan.toCreateResponse()
-            //Successful loan returns status: 200(OK) with additional information
-            ResponseEntity.ok().body(response)
+            // Successful loan returns status: 200(OK) with additional information
+            ResponseEntity.ok().body(loan)
         } catch (e: IllegalArgumentException) {
-            //Book or User not found returns status: 404(Not Found)
+            // Book or User not found returns status: 404(Not Found)
             ResponseEntity.status(404).body(mapOf("error" to e.message))
         } catch (e: IllegalStateException) {
             // Book already loaned returns status: 400(Bad Request)
             ResponseEntity.status(400).body(mapOf("error" to e.message))
         }
-    }
 
     @PatchMapping("/return")
     fun returnBook(
-        @RequestParam userId: Long,
-        @RequestParam loanId: Long,
+        @RequestParam userId: UUID,
+        @RequestParam loanId: UUID,
     ): ResponseEntity<Any> {
+        if (service.validateLoanOwner(userId, loanId)) {
+            return ResponseEntity.badRequest().body(null)
+        }
         return try {
-            val loan = service.returnBook(userId, loanId)
-            val response = mapOf(
-                "message" to "Book returned Successfully!",
-                "loanId" to loanId,
-                "bookTitle" to loan.book!!.title,
-                "returnTime" to loan.returnTime.toString()
-            )
-            //Successful return, status 200(OK) with additional information
+            service.returnBook(loanId)
+            val response =
+                mapOf(
+                    "message" to "Book returned Successfully!",
+                    "loanId" to loanId,
+                )
+            // Successful return, status 200(OK) with additional information
             ResponseEntity.ok(response)
         } catch (e: IllegalArgumentException) {
             // Loan not found, returns status 400(Bad Request) with additional information from the service
@@ -62,8 +59,6 @@ class LoanController (
 
     @GetMapping("/getMyLoans")
     fun getMyLoans(
-        @RequestParam userId: Long
-    ): GetAllLoansResponse {
-        return service.getLoansByUser(userId)
-    }
+        @RequestParam userId: UUID,
+    ): List<Loan> = service.getLoansByUser(userId)
 }
