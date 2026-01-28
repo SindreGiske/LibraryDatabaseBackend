@@ -1,9 +1,11 @@
 package no.fintlabs.librarydatabasebackend.service
 
-import no.fintlabs.librarydatabasebackend.DTO.response.BookResponse
+import no.fintlabs.librarydatabasebackend.dto.response.BookResponse
 import no.fintlabs.librarydatabasebackend.entity.Book
 import no.fintlabs.librarydatabasebackend.repository.BookRepository
+import org.springframework.data.jpa.domain.AbstractPersistable_.id
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 @Service
 class BookService(
@@ -15,18 +17,12 @@ class BookService(
     fun searchBooks(input: String): List<Book> =
         bookRepository.search(input)
 
-    fun deleteBook(book: Book) = bookRepository.delete(book)
+    fun getAllBooks(): List<BookResponse>
+     = bookRepository.findAll().toList().map { book -> book.toResponse() }
 
-    fun getAllBooks(): List<BookResponse> {
-    val books = bookRepository.findAll()
-        return books.map { book -> book.toResponse() }
-    }
-
-    fun getAllBooksRaw(): List<Book> = bookRepository.findAll()
-
-    fun getLoanedBooks(): List<Book> = bookRepository.listLoaned()
+    fun getAllBooksAdmin(): List<Book> = bookRepository.findAll()
 
     fun getAvailableBooks(): List<Book> = bookRepository.listAvailableBooks()
 
-    fun findById(id: Long): Book? = bookRepository.getBookById(id)
+    fun findById(id: UUID): Book? = bookRepository.getBookById(id)
 }

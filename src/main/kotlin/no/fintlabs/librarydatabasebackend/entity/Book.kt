@@ -14,17 +14,16 @@ open class Book(
     open var author: String,
     open var loaned: Boolean = false,
 
-    open val loans: MutableList<Long> = mutableListOf()
+    private val loans: MutableList<UUID> = mutableListOf()
 ) {
     constructor(title: String, author: String) : this(
         id = UUID.randomUUID(),
-        title = "",
-        author = "",
+        title = title,
+        author = author,
         loaned = false,
-        loans = mutableListOf()
     )
 
-    fun loanBook(loanId: Long) {
+    fun loanBook(loanId: UUID) {
         loans.add(loanId)
         loaned = true
     }

@@ -1,6 +1,6 @@
 package no.fintlabs.librarydatabasebackend.unit
 
-import no.fintlabs.librarydatabasebackend.DTO.mappers.toCreateResponse
+import no.fintlabs.librarydatabasebackend.dto.mappers.toCreateResponse
 import no.fintlabs.librarydatabasebackend.entity.Book
 import no.fintlabs.librarydatabasebackend.entity.Loan
 import no.fintlabs.librarydatabasebackend.entity.User
