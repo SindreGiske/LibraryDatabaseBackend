@@ -1,11 +1,13 @@
 package no.fintlabs.librarydatabasebackend.service
 
 import jakarta.transaction.Transactional
-import no.fintlabs.librarydatabasebackend.DTO.response.BookAdminResponse
+import no.fintlabs.librarydatabasebackend.dto.response.BookResponse
+import no.fintlabs.librarydatabasebackend.entity.Book
 import no.fintlabs.librarydatabasebackend.entity.Loan
 import no.fintlabs.librarydatabasebackend.entity.User
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 @Service
 class AdminService(
@@ -13,7 +15,7 @@ class AdminService(
     private val users: UserService,
     private val books: BookService
 ) {
-    fun validateAdmin(userId: Long): Boolean = users.isAdmin(userId)
+    fun validateAdmin(userId: UUID): Boolean = users.isAdmin(userId)
 
     fun getAllUsers(): List<User> = users.getAllUsers()
 
@@ -26,9 +28,9 @@ class AdminService(
         else return false
     }
 
-    fun getAllBooksWithLoans(): List<BookAdminResponse> = books.getAllBooksRaw().map { it.toAdminResponse() }
+    fun getAllBooks(): List<Book> = books.getAllBooksAdmin()
 
-    fun addAdmin(userId: Long): HttpStatus {
+    fun addAdmin(userId: UUID): HttpStatus {
         val user: User? = users.findById(userId)
         if (user == null) return HttpStatus.BAD_REQUEST
         else if (user.admin) return HttpStatus.ALREADY_REPORTED
@@ -42,7 +44,7 @@ class AdminService(
     fun createAdminUser() {
         if (users.adminExists()) return
 
-            val theAdmin = User(name = "admin", email = "adminMail", password = "admin123", admin = true)
+            val theAdmin = User(name = "admin", email = "admin", password = "admin", admin = true)
 
             users.registerNew(theAdmin)
     }
