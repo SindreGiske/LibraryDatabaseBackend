@@ -1,6 +1,5 @@
 package no.fintlabs.librarydatabasebackend.service
 
-import jakarta.transaction.Transactional
 import no.fintlabs.librarydatabasebackend.entity.Loan
 import no.fintlabs.librarydatabasebackend.repository.LoanRepository
 import org.springframework.stereotype.Service
@@ -13,7 +12,6 @@ class LoanService(
     private val bookService: BookService,
     private val userService: UserService,
 ) {
-    @Transactional
     fun registerLoan(
         bookId: UUID,
         userId: UUID,
@@ -39,7 +37,6 @@ class LoanService(
         return loanRepository.save(loan)
     }
 
-    @Transactional
     fun returnBook(loanId: UUID): Loan {
         val loan =
             loanRepository
@@ -60,7 +57,6 @@ class LoanService(
         return loanRepository.findByUsername(user!!.name)
     }
 
-    @Transactional
     fun validateLoanOwner(
         loanId: UUID,
         userId: UUID,

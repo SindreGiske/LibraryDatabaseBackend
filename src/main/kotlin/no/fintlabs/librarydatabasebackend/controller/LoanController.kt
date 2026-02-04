@@ -1,5 +1,6 @@
 package no.fintlabs.librarydatabasebackend.controller
 
+import jakarta.transaction.Transactional
 import no.fintlabs.librarydatabasebackend.entity.Loan
 import no.fintlabs.librarydatabasebackend.service.LoanService
 import org.springframework.http.ResponseEntity
@@ -18,6 +19,7 @@ class LoanController(
     private val service: LoanService,
 ) {
     @PostMapping
+    @Transactional
     fun createLoan(
         @RequestBody userId: UUID,
         @RequestParam bookId: UUID,
@@ -35,6 +37,7 @@ class LoanController(
         }
 
     @PatchMapping("/return")
+    @Transactional
     fun returnBook(
         @RequestParam userId: UUID,
         @RequestParam loanId: UUID,

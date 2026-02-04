@@ -1,5 +1,6 @@
 package no.fintlabs.librarydatabasebackend.controller
 
+import jakarta.transaction.Transactional
 import no.fintlabs.librarydatabasebackend.dto.request.CreateUserRequest
 import no.fintlabs.librarydatabasebackend.dto.request.LoginRequest
 import no.fintlabs.librarydatabasebackend.entity.User
@@ -22,6 +23,7 @@ class LoginController(
     private val loans: LoanService
 ) {
     @PostMapping()
+    @Transactional
     fun login(
         @RequestBody request: LoginRequest
     ): ResponseEntity<Any> {
@@ -43,6 +45,7 @@ class LoginController(
     }
 
     @PostMapping("/register")
+    @Transactional
     fun createUser(
         @RequestBody request: CreateUserRequest
     ): ResponseEntity<Any> {
@@ -64,6 +67,7 @@ class LoginController(
     }
 
     @DeleteMapping("/delete/{id}")
+    @Transactional
     fun deleteSelf(@PathVariable id: UUID): ResponseEntity<HttpStatus> {
         val user: User? = service.findById(id)
         if (user != null) {

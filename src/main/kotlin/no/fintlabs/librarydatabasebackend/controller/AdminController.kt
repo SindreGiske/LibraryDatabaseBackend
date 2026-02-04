@@ -1,5 +1,6 @@
 package no.fintlabs.librarydatabasebackend.controller
 
+import jakarta.transaction.Transactional
 import no.fintlabs.librarydatabasebackend.entity.User
 import no.fintlabs.librarydatabasebackend.service.AdminService
 import org.springframework.http.HttpStatus
@@ -56,6 +57,7 @@ class AdminController (
     }
 
     @PatchMapping("/addAdmin")
+    @Transactional
     fun setAnotherUserAsAdmin(
         @RequestBody
         selfId: UUID,
