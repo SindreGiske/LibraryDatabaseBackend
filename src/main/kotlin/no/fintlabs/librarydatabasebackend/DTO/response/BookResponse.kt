@@ -6,5 +6,6 @@ data class BookResponse(
     val id: UUID,
     val title: String,
     val author: String,
+    val description: String,
     val loaned: Boolean,
 )

@@ -12,14 +12,16 @@ open class Book(
 
     open var title: String,
     open var author: String,
+    open var description: String,
     open var loaned: Boolean = false,
 
     private val loans: MutableList<UUID> = mutableListOf()
 ) {
-    constructor(title: String, author: String) : this(
+    constructor(title: String, author: String, description: String) : this(
         id = UUID.randomUUID(),
         title = title,
         author = author,
+        description = description,
         loaned = false,
     )
 
@@ -31,5 +33,5 @@ open class Book(
     fun returnBook() {
         loaned = false
     }
-    fun toResponse(): BookResponse = BookResponse( id, title, author, loaned )
+    fun toResponse(): BookResponse = BookResponse( id, title, author, description, loaned )
 }

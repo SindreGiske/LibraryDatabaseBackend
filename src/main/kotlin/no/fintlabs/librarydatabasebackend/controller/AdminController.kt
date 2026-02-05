@@ -19,10 +19,10 @@ class AdminController (
     private val service: AdminService,
 ) {
     @PostMapping("/registerNewBook")
-    fun registerNewBook(@RequestBody userId: UUID, title: String, author: String): ResponseEntity<String> {
+    fun registerNewBook(@RequestBody userId: UUID, title: String, author: String, description: String): ResponseEntity<String> {
         if (!service.validateAdmin(userId)) return ResponseEntity(HttpStatus.UNAUTHORIZED)
 
-        val response: Boolean = service.registerNewBook(title, author)
+        val response: Boolean = service.registerNewBook(title, author, description)
         return if (response)
             ResponseEntity("$title by $author added to Database",
                 HttpStatus.CREATED)

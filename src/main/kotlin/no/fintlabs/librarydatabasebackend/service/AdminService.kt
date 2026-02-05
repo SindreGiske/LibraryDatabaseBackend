@@ -20,10 +20,10 @@ class AdminService(
 
     fun getAllUsers(): List<User> = users.getAllUsers()
 
-    fun registerNewBook(title: String, author: String): Boolean {
+    fun registerNewBook(title: String, author: String, description: String): Boolean {
         val check = books.searchBooks("$title $author")
         if (check.isEmpty()) {
-            books.addNewBook(title = title, author = author)
+            books.addNewBook(title = title, author = author, description = description)
             return true
         }
         else return false

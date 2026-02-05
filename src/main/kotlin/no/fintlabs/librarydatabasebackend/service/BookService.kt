@@ -10,8 +10,8 @@ import java.util.UUID
 class BookService(
     private val bookRepository: BookRepository
 ) {
-    fun addNewBook(title: String, author: String) =
-        bookRepository.save(Book(title = title, author = author))
+    fun addNewBook(title: String, author: String, description: String) =
+        bookRepository.save(Book(title = title, author = author, description = description))
 
     fun searchBooks(input: String): List<Book> =
         bookRepository.search(input)
