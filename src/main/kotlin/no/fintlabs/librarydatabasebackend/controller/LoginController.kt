@@ -1,13 +1,14 @@
 package no.fintlabs.librarydatabasebackend.controller
 
 import jakarta.transaction.Transactional
-import no.fintlabs.librarydatabasebackend.dto.request.CreateUserRequest
-import no.fintlabs.librarydatabasebackend.dto.request.LoginRequest
+import no.fintlabs.librarydatabasebackend.DTO.request.CreateUserRequest
+import no.fintlabs.librarydatabasebackend.DTO.request.LoginRequest
 import no.fintlabs.librarydatabasebackend.entity.User
 import no.fintlabs.librarydatabasebackend.service.LoanService
 import no.fintlabs.librarydatabasebackend.service.UserService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -20,7 +21,8 @@ import java.util.UUID
 @RequestMapping("/login")
 class LoginController(
     private val service: UserService,
-    private val loans: LoanService
+    private val loans: LoanService,
+    private val passwordEncoder: PasswordEncoder
 ) {
     @PostMapping()
     @Transactional
@@ -32,7 +34,9 @@ class LoginController(
         println("LoginController.login: $email attempted to log in.")
         val user: User? = service.getUserByEmail(email)
 
-        return if (user != null && user.validatePassword(password)) {
+        return if (
+            user != null &&
+            passwordEncoder.matches(password, user.passwordHash)) {
             // Successful Login, return user(without password) and status:200 (OK)
             println("LoginController.login:200 $email logged inn successfully.")
             ResponseEntity.ok().body(user)
@@ -46,13 +50,17 @@ class LoginController(
 
     @PostMapping("/register")
     @Transactional
-    fun createUser(
+    fun register(
         @RequestBody request: CreateUserRequest
     ): ResponseEntity<Any> {
         return if (service.getUserByEmail(request.email) == null) {
             println("LoginController.createUser:201 ${request.email} created a new user.")
             // Successfully created user, returns user(without password) and status:201 (CREATED)
-            val newUser: User = (User(name = request.name, email = request.email, password = request.password, admin = false))
+            val newUser: User = (User(
+                name = request.name,
+                email = request.email,
+                passwordHash = passwordEncoder.encode(request.password),
+                admin = false))
             println("LoginController.createUser:201 newUser: $newUser.")
             service.registerNew(newUser)
             // After successful create, get new user from repo to include ID in return

@@ -1,4 +1,4 @@
-package no.fintlabs.librarydatabasebackend.dto.request
+package no.fintlabs.librarydatabasebackend.DTO.request
 
 data class LoginRequest(
     val email: String,

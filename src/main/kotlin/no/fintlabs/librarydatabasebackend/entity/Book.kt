@@ -2,7 +2,7 @@ package no.fintlabs.librarydatabasebackend.entity
 
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
-import no.fintlabs.librarydatabasebackend.dto.response.BookResponse
+import no.fintlabs.librarydatabasebackend.DTO.response.BookResponse
 import java.util.UUID
 
 @Entity

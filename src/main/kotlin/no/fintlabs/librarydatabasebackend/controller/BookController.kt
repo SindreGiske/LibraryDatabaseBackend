@@ -1,6 +1,6 @@
 package no.fintlabs.librarydatabasebackend.controller
 
-import no.fintlabs.librarydatabasebackend.dto.response.BookResponse
+import no.fintlabs.librarydatabasebackend.DTO.response.BookResponse
 import no.fintlabs.librarydatabasebackend.service.BookService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestBody

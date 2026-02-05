@@ -1,11 +1,11 @@
 package no.fintlabs.librarydatabasebackend.service
 
 import jakarta.transaction.Transactional
-import no.fintlabs.librarydatabasebackend.dto.response.BookResponse
 import no.fintlabs.librarydatabasebackend.entity.Book
 import no.fintlabs.librarydatabasebackend.entity.Loan
 import no.fintlabs.librarydatabasebackend.entity.User
 import org.springframework.http.HttpStatus
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.UUID
 
@@ -13,7 +13,8 @@ import java.util.UUID
 class AdminService(
     private val loans: LoanService,
     private val users: UserService,
-    private val books: BookService
+    private val books: BookService,
+    private val passwordEncoder: PasswordEncoder
 ) {
     fun validateAdmin(userId: UUID): Boolean = users.isAdmin(userId)
 
@@ -44,7 +45,11 @@ class AdminService(
     fun createAdminUser() {
         if (users.adminExists()) return
 
-            val theAdmin = User(name = "admin", email = "admin", password = "admin", admin = true)
+            val theAdmin = User(
+                name = "admin",
+                email = "admin",
+                passwordHash = passwordEncoder.encode("admin"),
+                admin = true)
 
             users.registerNew(theAdmin)
     }

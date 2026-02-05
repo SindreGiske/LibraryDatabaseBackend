@@ -1,9 +1,8 @@
 package no.fintlabs.librarydatabasebackend.service
 
-import no.fintlabs.librarydatabasebackend.dto.response.BookResponse
+import no.fintlabs.librarydatabasebackend.DTO.response.BookResponse
 import no.fintlabs.librarydatabasebackend.entity.Book
 import no.fintlabs.librarydatabasebackend.repository.BookRepository
-import org.springframework.data.jpa.domain.AbstractPersistable_.id
 import org.springframework.stereotype.Service
 import java.util.UUID
 

@@ -1,4 +1,4 @@
-package no.fintlabs.librarydatabasebackend.dto.response
+package no.fintlabs.librarydatabasebackend.DTO.response
 
 import java.util.UUID
 

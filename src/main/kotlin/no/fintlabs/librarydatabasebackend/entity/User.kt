@@ -15,7 +15,7 @@ open class User(
     open var email: String = "",
 
     @JsonIgnore
-    private var password: String = "",
+    var passwordHash: String = "",
     open var admin: Boolean = false,
 
     open val loans: MutableList<UUID> = mutableListOf(),
@@ -25,9 +25,5 @@ open class User(
 
     fun makeAdmin() {
         admin = true
-    }
-
-    fun validatePassword(input: String): Boolean {
-        return input == password
     }
 }
