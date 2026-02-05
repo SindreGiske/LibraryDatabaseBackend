@@ -7,13 +7,16 @@ import org.springframework.data.repository.query.Param
 import java.util.UUID
 
 interface BookRepository : JpaRepository<Book, UUID> {
-
-    @Query("""
+    @Query(
+        """
         SELECT b FROM Book b
         WHERE lower(b.title) LIKE lower(concat('%', :query, '%'))
            OR lower(b.author) LIKE lower(concat('%', :query, '%'))
-    """)
-    fun search(@Param("query") query: String): List<Book>
+    """,
+    )
+    fun search(
+        @Param("query") query: String,
+    ): List<Book>
 
     fun getBookById(bookId: UUID): Book?
 

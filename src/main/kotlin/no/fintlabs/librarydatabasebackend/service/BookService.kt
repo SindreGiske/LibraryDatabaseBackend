@@ -8,16 +8,17 @@ import java.util.UUID
 
 @Service
 class BookService(
-    private val bookRepository: BookRepository
+    private val bookRepository: BookRepository,
 ) {
-    fun addNewBook(title: String, author: String, description: String) =
-        bookRepository.save(Book(title = title, author = author, description = description))
+    fun addNewBook(
+        title: String,
+        author: String,
+        description: String,
+    ) = bookRepository.save(Book(title = title, author = author, description = description))
 
-    fun searchBooks(input: String): List<Book> =
-        bookRepository.search(input)
+    fun searchBooks(input: String): List<Book> = bookRepository.search(input)
 
-    fun getAllBooks(): List<BookResponse>
-     = bookRepository.findAll().toList().map { book -> book.toResponse() }
+    fun getAllBooks(): List<BookResponse> = bookRepository.findAll().toList().map { book -> book.toResponse() }
 
     fun getAllBooksAdmin(): List<Book> = bookRepository.findAll()
 
