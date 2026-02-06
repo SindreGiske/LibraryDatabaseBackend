@@ -8,8 +8,8 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
@@ -21,7 +21,7 @@ class LoanController(
     @PostMapping
     @Transactional
     fun createLoan(
-        @RequestParam bookId: UUID,
+        @RequestBody bookId: UUID,
         session: HttpSession,
     ): ResponseEntity<Any> =
         try {
@@ -40,7 +40,7 @@ class LoanController(
     @PatchMapping("/return")
     @Transactional
     fun returnBook(
-        @RequestParam loanId: UUID,
+        @RequestBody loanId: UUID,
         session: HttpSession,
     ): ResponseEntity<Any> {
         val userId = session.getAttribute("userId") as UUID

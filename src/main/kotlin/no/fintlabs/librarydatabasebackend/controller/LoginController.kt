@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -45,7 +46,7 @@ class LoginController(
             session.setAttribute("userId", user.id)
             session.setAttribute("isAdmin", user.admin)
 
-            ResponseEntity.ok().body(user)
+            ResponseEntity.ok().build()
         } else {
             // Failed Login, returns status:401 with message
             println("LoginController.login:401 $email failed to log in.")
@@ -84,7 +85,7 @@ class LoginController(
             val user = service.getUserByEmail(request.email)
             session.setAttribute("userId", user!!.id)
             session.setAttribute("isAdmin", user.admin)
-            ResponseEntity.status(HttpStatus.CREATED).body(user)
+            ResponseEntity.status(HttpStatus.CREATED).build()
         } else {
             // Failed create because email already used, returns status:401 with message
             println("LoginController.createUser:401, ${request.email} failed to create a new user.")
@@ -112,5 +113,14 @@ class LoginController(
             return ResponseEntity(HttpStatus.NOT_FOUND)
         }
         // User not found; 404
+    }
+
+    @GetMapping("/me")
+    fun me(session: HttpSession): ResponseEntity<Any> {
+        val userId = session.getAttribute("userId") as UUID
+        val user: User =
+            service.findById(userId)
+                ?: return ResponseEntity(HttpStatus.NOT_FOUND)
+        return ResponseEntity.ok().body(user.toFrontendUserCache())
     }
 }
