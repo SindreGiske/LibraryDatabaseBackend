@@ -1,5 +1,6 @@
 package no.fintlabs.librarydatabasebackend.controller
 
+import jakarta.servlet.http.HttpSession
 import jakarta.transaction.Transactional
 import no.fintlabs.librarydatabasebackend.entity.Loan
 import no.fintlabs.librarydatabasebackend.service.LoanService
@@ -7,7 +8,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -21,10 +21,11 @@ class LoanController(
     @PostMapping
     @Transactional
     fun createLoan(
-        @RequestBody userId: UUID,
         @RequestParam bookId: UUID,
+        session: HttpSession,
     ): ResponseEntity<Any> =
         try {
+            val userId = session.getAttribute("userId") as UUID
             val loan = service.registerLoan(bookId, userId)
             // Successful loan returns status: 200(OK) with additional information
             ResponseEntity.ok().body(loan)
@@ -39,9 +40,10 @@ class LoanController(
     @PatchMapping("/return")
     @Transactional
     fun returnBook(
-        @RequestParam userId: UUID,
         @RequestParam loanId: UUID,
+        session: HttpSession,
     ): ResponseEntity<Any> {
+        val userId = session.getAttribute("userId") as UUID
         if (service.validateLoanOwner(userId, loanId)) {
             return ResponseEntity.badRequest().body(null)
         }
@@ -61,7 +63,5 @@ class LoanController(
     }
 
     @GetMapping("/getMyLoans")
-    fun getMyLoans(
-        @RequestParam userId: UUID,
-    ): List<Loan> = service.getLoansByUser(userId)
+    fun getMyLoans(session: HttpSession): List<Loan> = service.getLoansByUser(session.getAttribute("userId") as UUID)
 }

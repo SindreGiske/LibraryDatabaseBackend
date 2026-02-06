@@ -1,5 +1,6 @@
 package no.fintlabs.librarydatabasebackend.controller
 
+import jakarta.servlet.http.HttpSession
 import jakarta.transaction.Transactional
 import no.fintlabs.librarydatabasebackend.entity.User
 import no.fintlabs.librarydatabasebackend.service.AdminService
@@ -15,55 +16,76 @@ import java.util.UUID
 
 @RestController
 @RequestMapping("/admin")
-class AdminController (
+class AdminController(
     private val service: AdminService,
 ) {
     @PostMapping("/registerNewBook")
-    fun registerNewBook(@RequestBody userId: UUID, title: String, author: String, description: String): ResponseEntity<String> {
+    fun registerNewBook(
+        @RequestBody
+        title: String,
+        author: String,
+        description: String,
+        session: HttpSession,
+    ): ResponseEntity<String> {
+        val userId = session.getAttribute("userId") as UUID
         if (!service.validateAdmin(userId)) return ResponseEntity(HttpStatus.UNAUTHORIZED)
 
         val response: Boolean = service.registerNewBook(title, author, description)
-        return if (response)
-            ResponseEntity("$title by $author added to Database",
-                HttpStatus.CREATED)
-        else ResponseEntity("Book already exists in database", HttpStatus.BAD_REQUEST)
+        return if (response) {
+            ResponseEntity(
+                "$title by $author added to Database",
+                HttpStatus.CREATED,
+            )
+        } else {
+            ResponseEntity("Book already exists in database", HttpStatus.BAD_REQUEST)
+        }
     }
 
     @GetMapping("/getUsers")
-    fun getAllUsers(
-        @RequestBody userId: UUID
-    ): ResponseEntity<List<User>> {
-        return if (!service.validateAdmin(userId)) ResponseEntity(emptyList(), HttpStatus.UNAUTHORIZED)
-        else {
+    fun getAllUsers(session: HttpSession): ResponseEntity<List<User>> {
+        val userId = session.getAttribute("userId") as UUID
+        return if (!service.validateAdmin(userId)) {
+            ResponseEntity(emptyList(), HttpStatus.UNAUTHORIZED)
+        } else {
             val users = service.getAllUsers()
             return ResponseEntity(users, HttpStatus.OK)
         }
     }
 
     @GetMapping("/getAllLoans")
-    fun getAllLoans(
-        @RequestBody userId: UUID
-    ): ResponseEntity<Any> {
-        return (if (!service.validateAdmin(userId)) ResponseEntity(emptyList<Any>(), HttpStatus.UNAUTHORIZED)
-        else ResponseEntity(service.getAllLoans(), HttpStatus.OK) )
+    fun getAllLoans(session: HttpSession): ResponseEntity<Any> {
+        val userId = session.getAttribute("userId") as UUID
+        return (
+            if (!service.validateAdmin(userId)) {
+                ResponseEntity(emptyList<Any>(), HttpStatus.UNAUTHORIZED)
+            } else {
+                ResponseEntity(service.getAllLoans(), HttpStatus.OK)
+            }
+        )
     }
 
     @GetMapping("/getAllBooks")
-    fun getAllBooksFull(
-        @RequestBody userId: UUID
-    ): ResponseEntity<Any> {
-        return if (!service.validateAdmin(userId)) ResponseEntity("", HttpStatus.UNAUTHORIZED)
-        else ResponseEntity(service.getAllBooks(), HttpStatus.OK)
+    fun getAllBooksFull(session: HttpSession): ResponseEntity<Any> {
+        val userId = session.getAttribute("userId") as UUID
+        return if (!service.validateAdmin(userId)) {
+            ResponseEntity("", HttpStatus.UNAUTHORIZED)
+        } else {
+            ResponseEntity(service.getAllBooks(), HttpStatus.OK)
+        }
     }
 
     @PatchMapping("/addAdmin")
     @Transactional
     fun setAnotherUserAsAdmin(
         @RequestBody
-        selfId: UUID,
         subjectId: UUID,
-        ): HttpStatus {
-        return if (!service.validateAdmin(selfId)) HttpStatus.UNAUTHORIZED
-        else service.addAdmin(subjectId)
+        session: HttpSession,
+    ): HttpStatus {
+        val userId = session.getAttribute("userId") as UUID
+        return if (!service.validateAdmin(userId)) {
+            HttpStatus.UNAUTHORIZED
+        } else {
+            service.addAdmin(subjectId)
+        }
     }
 }

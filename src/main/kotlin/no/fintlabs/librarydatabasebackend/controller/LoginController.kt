@@ -1,5 +1,6 @@
 package no.fintlabs.librarydatabasebackend.controller
 
+import jakarta.servlet.http.HttpSession
 import jakarta.transaction.Transactional
 import no.fintlabs.librarydatabasebackend.DTO.request.CreateUserRequest
 import no.fintlabs.librarydatabasebackend.DTO.request.LoginRequest
@@ -28,6 +29,7 @@ class LoginController(
     @Transactional
     fun login(
         @RequestBody request: LoginRequest,
+        session: HttpSession,
     ): ResponseEntity<Any> {
         val email = request.email
         val password = request.password
@@ -39,6 +41,10 @@ class LoginController(
         ) {
             // Successful Login, return user(without password) and status:200 (OK)
             println("LoginController.login:200 $email logged inn successfully.")
+
+            session.setAttribute("userId", user.id)
+            session.setAttribute("isAdmin", user.admin)
+
             ResponseEntity.ok().body(user)
         } else {
             // Failed Login, returns status:401 with message
@@ -49,10 +55,17 @@ class LoginController(
         }
     }
 
+    @PostMapping("/logout")
+    fun logout(session: HttpSession): ResponseEntity<Any> {
+        session.invalidate()
+        return ResponseEntity.ok().build()
+    }
+
     @PostMapping("/register")
     @Transactional
     fun register(
         @RequestBody request: CreateUserRequest,
+        session: HttpSession,
     ): ResponseEntity<Any> =
         if (service.getUserByEmail(request.email) == null) {
             println("LoginController.createUser:201 ${request.email} created a new user.")
@@ -69,6 +82,8 @@ class LoginController(
             service.registerNew(newUser)
             // After successful create, get new user from repo to include ID in return
             val user = service.getUserByEmail(request.email)
+            session.setAttribute("userId", user!!.id)
+            session.setAttribute("isAdmin", user.admin)
             ResponseEntity.status(HttpStatus.CREATED).body(user)
         } else {
             // Failed create because email already used, returns status:401 with message
@@ -78,15 +93,15 @@ class LoginController(
                 .body("A user with this email already exists.")
         }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete")
     @Transactional
-    fun deleteSelf(
-        @PathVariable id: UUID,
-    ): ResponseEntity<HttpStatus> {
-        val user: User? = service.findById(id)
+    fun deleteSelf(session: HttpSession): ResponseEntity<HttpStatus> {
+        val userId = session.getAttribute("userId") as UUID
+        val user: User? = service.findById(userId)
         if (user != null) {
             if (loans.validateAllBooksReturned(user.id)) {
-                service.deleteUserById(id)
+                service.deleteUserById(userId)
+                session.invalidate()
                 // If user has successfully been deleted, return 410 GONE
                 return ResponseEntity(HttpStatus.GONE)
             } else {
