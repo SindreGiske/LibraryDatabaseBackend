@@ -1,5 +1,6 @@
 package no.fintlabs.librarydatabasebackend.entity
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 import java.time.LocalDateTime
 import java.util.UUID
@@ -9,6 +10,7 @@ open class Loan(
     @Id
     open val id: UUID,
     open val username: String,
+    @JsonIgnore
     open val bookId: UUID,
     open val title: String,
     open val author: String,
