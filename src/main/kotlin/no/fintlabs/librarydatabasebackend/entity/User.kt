@@ -12,13 +12,10 @@ open class User(
     open var name: String = "",
     open var email: String = "",
     @JsonIgnore
-    var passwordHash: String = "",
+    open var passwordHash: String = "",
     open var admin: Boolean = false,
     open val loans: MutableList<UUID> = mutableListOf(),
 ) {
-//    constructor(name: String, email: String, password: String, admin: Boolean?) :
-//            this(UUID.randomUUID(), name, email, password, admin?: false)
-
     fun makeAdmin() {
         admin = true
     }

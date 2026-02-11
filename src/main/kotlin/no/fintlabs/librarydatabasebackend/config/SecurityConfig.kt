@@ -17,7 +17,7 @@ class SecurityConfig {
         http
             .csrf { it.disable() }
             .authorizeHttpRequests {
-                it.requestMatchers("/login", "/admin", "/loan").permitAll()
+                it.requestMatchers("/login/**", "/books/**").permitAll()
                 it.anyRequest().authenticated()
             }.formLogin { it.disable() }
             .httpBasic { it.disable() }

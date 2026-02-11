@@ -27,7 +27,7 @@ class LoanService(
         val loan =
             Loan(
                 username = user.name,
-                bookId = book.id,
+                bookId = book.id!!,
                 title = book.title,
                 author = book.author,
             )

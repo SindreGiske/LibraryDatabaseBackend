@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpSession
 import jakarta.transaction.Transactional
 import no.fintlabs.librarydatabasebackend.DTO.request.CreateUserRequest
 import no.fintlabs.librarydatabasebackend.DTO.request.LoginRequest
+import no.fintlabs.librarydatabasebackend.entity.FrontendUserCache
 import no.fintlabs.librarydatabasebackend.entity.User
 import no.fintlabs.librarydatabasebackend.service.LoanService
 import no.fintlabs.librarydatabasebackend.service.UserService
@@ -34,14 +35,16 @@ class LoginController(
     ): ResponseEntity<Any> {
         val email = request.email
         val password = request.password
-        println("LoginController.login: $email attempted to log in.")
         val user: User? = service.getUserByEmail(email)
 
         return if (user != null &&
             passwordEncoder.matches(password, user.passwordHash)
         ) {
             // Successful Login, return user(without password) and status:200 (OK)
+            println("")
             println("LoginController.login:200 $email logged inn successfully.")
+            println("USER $email logged in.")
+            println("session id = ${session.id}")
 
             session.setAttribute("userId", user.id)
             session.setAttribute("isAdmin", user.admin)
@@ -58,6 +61,7 @@ class LoginController(
 
     @PostMapping("/logout")
     fun logout(session: HttpSession): ResponseEntity<Any> {
+        println("a user logged out, session terminated: ${session.id}")
         session.invalidate()
         return ResponseEntity.ok().build()
     }
@@ -116,8 +120,11 @@ class LoginController(
     }
 
     @GetMapping("/me")
-    fun me(session: HttpSession): ResponseEntity<Any> {
-        val userId = session.getAttribute("userId") as UUID
+    fun me(session: HttpSession?): ResponseEntity<FrontendUserCache?> {
+        val rawId =
+            session?.getAttribute("userId")
+                ?: return ResponseEntity(HttpStatus.FORBIDDEN)
+        val userId = rawId as UUID
         val user: User =
             service.findById(userId)
                 ?: return ResponseEntity(HttpStatus.NOT_FOUND)

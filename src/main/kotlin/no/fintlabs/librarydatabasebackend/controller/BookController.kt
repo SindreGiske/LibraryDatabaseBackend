@@ -10,15 +10,10 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/books")
 class BookController(
-    private val service : BookService,
+    private val service: BookService,
 ) {
     @GetMapping("/all")
-    fun getAllBooks(): List<BookResponse> {
-    val books: List<BookResponse> = service.getAllBooks()
-
-        println(books)
-        return books
-    }
+    fun getAllBooks(): List<BookResponse> = service.getAllBooks()
 
     @GetMapping("/available")
     fun getAvailableBooks() = service.getAvailableBooks()
