@@ -1,9 +1,7 @@
 package no.fintlabs.librarydatabasebackend.DTO.response
 
-import java.util.UUID
-
 data class BookResponse(
-    val id: UUID,
+    val id: String,
     val title: String,
     val author: String,
     val description: String,

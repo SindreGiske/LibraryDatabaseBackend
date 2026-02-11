@@ -34,5 +34,5 @@ open class Book(
         loaned = false
     }
 
-    fun toResponse(): BookResponse = BookResponse(id!!, title, author, description, loaned)
+    fun toResponse(): BookResponse = BookResponse(id!!.toString(), title, author, description, loaned)
 }
