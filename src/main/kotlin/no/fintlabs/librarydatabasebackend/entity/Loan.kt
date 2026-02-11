@@ -16,7 +16,7 @@ open class Loan(
     open val author: String,
     open val borrowTime: LocalDateTime = LocalDateTime.now(),
     open var returnTime: LocalDateTime? = null,
-    open var active: Boolean = returnTime != null,
+    open var active: Boolean = returnTime == null,
 ) {
     constructor(username: String, bookId: UUID, title: String, author: String) :
         this(

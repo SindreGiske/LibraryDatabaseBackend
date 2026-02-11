@@ -74,7 +74,7 @@ class LoginController(
         session: HttpSession,
     ): ResponseEntity<Any> =
         if (service.getUserByEmail(request.email) == null) {
-            println("LoginController.createUser:201 ${request.email} created a new user.")
+            println("LoginController.createUser:201 new user created : ${request.email}.")
             // Successfully created user, returns user(without password) and status:201 (CREATED)
             val newUser: User = (
                 User(

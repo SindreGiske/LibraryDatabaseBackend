@@ -29,38 +29,35 @@ class LoanController(
             val userId = session.getAttribute("userId") as UUID
             val loan = service.registerLoan(bookUUID, userId)
             // Successful loan returns status: 200(OK) with additional information
-            println(" user ${loan.username} loaned ${loan.title}")
+            println(" user ${loan.username} loaned ${loan.title} by ${loan.author}")
             ResponseEntity.ok().build()
         } catch (e: IllegalArgumentException) {
             // Book or User not found returns status: 404(Not Found)
-            ResponseEntity.status(404).body(mapOf("Book of User not found." to e.message))
+            ResponseEntity.status(404).body(e.message)
         } catch (e: IllegalStateException) {
             // Book already loaned returns status: 400(Bad Request)
-            ResponseEntity.status(400).body(mapOf("Book is already loaned out." to e.message))
+            ResponseEntity.status(400).body(e.message)
         }
 
     @PatchMapping("/return")
     @Transactional
     fun returnBook(
-        @RequestBody loanId: UUID,
+        @RequestBody loanId: String,
         session: HttpSession,
     ): ResponseEntity<Any> {
+        val loanUUID = UUID.fromString(loanId)
         val userId = session.getAttribute("userId") as UUID
-        if (service.validateLoanOwner(userId, loanId)) {
-            return ResponseEntity.badRequest().body(null)
+        if (!service.validateLoanOwner(loanUUID, userId)) {
+            return ResponseEntity.status(403).body("You cannot return others' loans.")
         }
-        return try {
-            service.returnBook(loanId)
-            val response =
-                mapOf(
-                    "message" to "Book returned Successfully!",
-                    "loanId" to loanId,
-                )
+        try {
+            service.returnBook(loanUUID)
             // Successful return, status 200(OK) with additional information
-            ResponseEntity.ok(response)
+            println("LOAN RETURNED: $loanId")
+            return ResponseEntity.ok("Book returned successfully!")
         } catch (e: IllegalArgumentException) {
             // Loan not found, returns status 400(Bad Request) with additional information from the service
-            ResponseEntity.status(400).body(mapOf("Bad Request" to e.message))
+            return ResponseEntity.status(400).body(e.message)
         }
     }
 

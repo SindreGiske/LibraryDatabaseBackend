@@ -66,7 +66,6 @@ class LoanService(
             userService.findById(userId)
                 ?: throw IllegalArgumentException("User with ID $userId not found")
         val loan = loanRepository.findById(loanId).get()
-
         return loan.username == user.name
     }
 
