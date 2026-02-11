@@ -16,7 +16,13 @@ class AdminService(
     private val books: BookService,
     private val passwordEncoder: PasswordEncoder,
 ) {
-    fun validateAdmin(userId: UUID): Boolean = users.isAdmin(userId)
+    fun validateAdmin(userId: UUID): Boolean {
+        val valid = users.isAdmin(userId)
+        if (!valid) {
+            println("User $userId tried to perform an admin action.")
+        }
+        return valid
+    }
 
     fun getAllUsers(): List<User> = users.getAllUsers()
 

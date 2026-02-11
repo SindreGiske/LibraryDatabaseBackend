@@ -21,20 +21,22 @@ class LoanController(
     @PostMapping
     @Transactional
     fun createLoan(
-        @RequestBody bookId: UUID,
+        @RequestBody bookId: String,
         session: HttpSession,
     ): ResponseEntity<Any> =
         try {
+            val bookUUID = UUID.fromString(bookId)
             val userId = session.getAttribute("userId") as UUID
-            val loan = service.registerLoan(bookId, userId)
+            val loan = service.registerLoan(bookUUID, userId)
             // Successful loan returns status: 200(OK) with additional information
-            ResponseEntity.ok().body(loan)
+            println(" user ${loan.username} loaned ${loan.title}")
+            ResponseEntity.ok().build()
         } catch (e: IllegalArgumentException) {
             // Book or User not found returns status: 404(Not Found)
-            ResponseEntity.status(404).body(mapOf("error" to e.message))
+            ResponseEntity.status(404).body(mapOf("Book of User not found." to e.message))
         } catch (e: IllegalStateException) {
             // Book already loaned returns status: 400(Bad Request)
-            ResponseEntity.status(400).body(mapOf("error" to e.message))
+            ResponseEntity.status(400).body(mapOf("Book is already loaned out." to e.message))
         }
 
     @PatchMapping("/return")

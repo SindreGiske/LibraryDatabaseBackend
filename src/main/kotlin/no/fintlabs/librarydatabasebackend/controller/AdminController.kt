@@ -41,6 +41,18 @@ class AdminController(
         }
     }
 
+    @PostMapping("verify")
+    @Transactional
+    fun verifyAdmin(session: HttpSession): ResponseEntity<Any> {
+        val userId = session.getAttribute("userId") as UUID
+        val admin: Boolean = service.validateAdmin(userId)
+        return if (admin) {
+            ResponseEntity(HttpStatus.OK)
+        } else {
+            ResponseEntity(HttpStatus.UNAUTHORIZED)
+        }
+    }
+
     @GetMapping("/getUsers")
     fun getAllUsers(session: HttpSession): ResponseEntity<List<User>> {
         val userId = session.getAttribute("userId") as UUID
@@ -82,10 +94,16 @@ class AdminController(
         session: HttpSession,
     ): HttpStatus {
         val userId = session.getAttribute("userId") as UUID
-        return if (!service.validateAdmin(userId)) {
-            HttpStatus.UNAUTHORIZED
+        if (!service.validateAdmin(userId)) {
+            println("⚠️")
+            println("⚠️ NON-ADMIN USER ${session.getAttribute("userId")} TRIED TO MAKE USER $subjectId AN ADMIN")
+            println("⚠️")
+            return HttpStatus.UNAUTHORIZED
         } else {
-            service.addAdmin(subjectId)
+            println("")
+            println("Admin user ${session.getAttribute("userId")} added user $subjectId as Admin.")
+            println("")
+            return service.addAdmin(subjectId)
         }
     }
 }

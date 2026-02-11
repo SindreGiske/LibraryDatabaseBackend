@@ -49,6 +49,7 @@ class LoanService(
         loan.returnTime = LocalDateTime.now()
         book.returnBook()
 
+        println("user ${loan.username} returned ${loan.title} at ${loan.returnTime}")
         return loanRepository.save(loan)
     }
 

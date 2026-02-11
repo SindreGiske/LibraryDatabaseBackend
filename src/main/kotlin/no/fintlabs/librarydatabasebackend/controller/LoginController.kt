@@ -45,6 +45,7 @@ class LoginController(
             println("LoginController.login:200 $email logged inn successfully.")
             println("USER $email logged in.")
             println("session id = ${session.id}")
+            println("")
 
             session.setAttribute("userId", user.id)
             session.setAttribute("isAdmin", user.admin)
