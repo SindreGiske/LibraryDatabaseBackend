@@ -106,6 +106,7 @@ class LoginController(
         val user: User? = service.findById(userId)
         if (user != null) {
             if (loans.validateAllBooksReturned(user.id)) {
+                println("user ${user.name} deleted their account.")
                 service.deleteUserById(userId)
                 session.invalidate()
                 // If user has successfully been deleted, return 410 GONE
