@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 @Configuration
 class SecurityConfig {
@@ -19,7 +20,8 @@ class SecurityConfig {
             .authorizeHttpRequests {
                 it.requestMatchers("/login/**", "/books/**").permitAll()
                 it.anyRequest().authenticated()
-            }.formLogin { it.disable() }
+            }.addFilterBefore(SessionAuthFilter(), UsernamePasswordAuthenticationFilter::class.java)
+            .formLogin { it.disable() }
             .httpBasic { it.disable() }
 
         return http.build()

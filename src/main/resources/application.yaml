@@ -19,6 +19,11 @@ spring:
     compose:
       enabled: false
 
+server:
+  servlet:
+    session:
+      timeout: 60m
+
 logging:
   level:
     org.hibernate.SQL: OFF
