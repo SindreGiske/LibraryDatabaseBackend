@@ -9,27 +9,33 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.OncePerRequestFilter
 
 class SessionAuthFilter : OncePerRequestFilter() {
+    override fun shouldNotFilter(request: HttpServletRequest): Boolean {
+        val path = request.servletPath
+
+        return request.method == "OPTIONS" ||
+            path.startsWith("/login") ||
+            path.startsWith("/books")
+    }
+
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
         filterChain: FilterChain,
     ) {
-        val context = SecurityContextHolder.getContext()
-        if (context.authentication == null) {
-            val session = request.getSession(false)
-            val userId = session?.getAttribute("userId")
-            val isAdmin = session.getAttribute("isAdmin") as? Boolean ?: false
+        val session = request.getSession(false)
+        val userId = session?.getAttribute("userId")
+        val isAdmin = session.getAttribute("isAdmin") as? Boolean ?: false
 
-            if (userId != null) {
-                val authorities =
-                    buildList {
-                        add(SimpleGrantedAuthority("ROLE_USER"))
-                        if (isAdmin) add(SimpleGrantedAuthority("ROLE_ADMIN"))
-                    }
+        if (userId != null && SecurityContextHolder.getContext().authentication == null) {
+            val authorities =
+                if (isAdmin) {
+                    listOf(SimpleGrantedAuthority("ROLE_ADMIN"))
+                } else {
+                    emptyList()
+                }
+            val auth = UsernamePasswordAuthenticationToken(userId.toString(), null, authorities)
 
-                val auth = UsernamePasswordAuthenticationToken(userId.toString(), null, authorities)
-                context.authentication = auth
-            }
+            SecurityContextHolder.getContext().authentication = auth
         }
         filterChain.doFilter(request, response)
     }
