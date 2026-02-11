@@ -9,10 +9,21 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: false
+
   docker:
     compose:
       enabled: false
+
+logging:
+  level:
+    org.hibernate.SQL: OFF
+    org.hibernate.orm.jdbc.bind: OFF
+    org.hibernate.type.descriptor.sql: WARN
+    org.hibernate.type.descriptor.jdbc: WARN
+    org.springframework.transaction: WARN
+    org.springframework.orm.jpa: WARN
