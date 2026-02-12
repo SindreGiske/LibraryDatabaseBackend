@@ -2,6 +2,7 @@ package no.fintlabs.librarydatabasebackend.controller
 
 import jakarta.servlet.http.HttpSession
 import jakarta.transaction.Transactional
+import no.fintlabs.librarydatabasebackend.DTO.response.AdminOverviewType
 import no.fintlabs.librarydatabasebackend.entity.Loan
 import no.fintlabs.librarydatabasebackend.entity.User
 import no.fintlabs.librarydatabasebackend.service.AdminService
@@ -42,7 +43,17 @@ class AdminController(
         }
     }
 
-    @PostMapping("verify")
+    @GetMapping("/overview")
+    fun adminOverview(session: HttpSession): ResponseEntity<AdminOverviewType> {
+        val userId = session.getAttribute("userId") as UUID
+        return if (!service.validateAdmin(userId)) {
+            ResponseEntity(HttpStatus.UNAUTHORIZED)
+        } else {
+            ResponseEntity.ok().body(service.overview())
+        }
+    }
+
+    @PostMapping("/verify")
     @Transactional
     fun verifyAdmin(session: HttpSession): ResponseEntity<Any> {
         val userId = session.getAttribute("userId") as UUID

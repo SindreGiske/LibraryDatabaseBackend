@@ -114,6 +114,7 @@ class StartupBootstrap(
             )
 
             println("DB init complete.")
+            println("")
         }
     }
 }

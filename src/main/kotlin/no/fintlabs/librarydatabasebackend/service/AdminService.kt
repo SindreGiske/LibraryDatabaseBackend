@@ -1,6 +1,7 @@
 package no.fintlabs.librarydatabasebackend.service
 
 import jakarta.transaction.Transactional
+import no.fintlabs.librarydatabasebackend.DTO.response.AdminOverviewType
 import no.fintlabs.librarydatabasebackend.entity.Book
 import no.fintlabs.librarydatabasebackend.entity.Loan
 import no.fintlabs.librarydatabasebackend.entity.User
@@ -23,6 +24,15 @@ class AdminService(
         }
         return valid
     }
+
+    fun overview(): AdminOverviewType =
+        AdminOverviewType(
+            userCount = users.getAmountOfUsers(),
+            totalBookCount = books.getAmountOfBooks(),
+            availableBooksCount = books.getAmountOfAvailableBooks(),
+            totalLoanCount = loans.getAmountOfLoans(),
+            activeLoanCount = loans.getAmountOfActiveLoans(),
+        )
 
     fun getAllUsers(): List<User> = users.getAllUsers()
 

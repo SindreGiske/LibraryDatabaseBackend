@@ -25,4 +25,8 @@ class BookService(
     fun getAvailableBooks(): List<Book> = bookRepository.listAvailableBooks()
 
     fun findById(id: UUID): Book? = bookRepository.getBookById(id)
+
+    fun getAmountOfBooks(): Int = bookRepository.count().toInt()
+
+    fun getAmountOfAvailableBooks(): Int = bookRepository.countBooksByLoanedFalse().toInt()
 }

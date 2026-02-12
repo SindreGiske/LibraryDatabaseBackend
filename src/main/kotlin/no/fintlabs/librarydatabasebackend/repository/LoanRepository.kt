@@ -8,4 +8,6 @@ interface LoanRepository : JpaRepository<Loan, UUID> {
     fun findByUsername(username: String): List<Loan>
 
     fun findLoanById(loanId: UUID): Loan?
+
+    fun countLoansByActiveTrue(): Long
 }

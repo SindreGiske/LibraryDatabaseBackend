@@ -25,4 +25,6 @@ interface BookRepository : JpaRepository<Book, UUID> {
 
     @Query("SELECT b FROM Book b WHERE b.loaned = false")
     fun listAvailableBooks(): List<Book>
+
+    fun countBooksByLoanedFalse(): Long
 }

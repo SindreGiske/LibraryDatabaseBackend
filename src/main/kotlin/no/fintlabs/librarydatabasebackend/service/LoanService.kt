@@ -80,4 +80,8 @@ class LoanService(
     fun findLoanById(id: UUID): Loan? = loanRepository.findLoanById(id)
 
     fun getAllLoans(): List<Loan> = loanRepository.findAll()
+
+    fun getAmountOfLoans(): Int = loanRepository.count().toInt()
+
+    fun getAmountOfActiveLoans(): Int = loanRepository.countLoansByActiveTrue().toInt()
 }
