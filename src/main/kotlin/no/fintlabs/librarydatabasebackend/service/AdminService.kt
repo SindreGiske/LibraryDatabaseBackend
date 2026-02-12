@@ -54,6 +54,8 @@ class AdminService(
         }
     }
 
+    fun getSpecificUsersLoans(subjectId: UUID): List<Loan> = loans.getLoansByUser(subjectId)
+
     @Transactional
     fun createAdminUser() {
         if (users.adminExists()) return

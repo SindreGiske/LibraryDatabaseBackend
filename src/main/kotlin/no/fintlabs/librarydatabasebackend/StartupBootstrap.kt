@@ -15,10 +15,10 @@ class StartupBootstrap(
 ) : CommandLineRunner {
     @Transactional
     override fun run(vararg args: String?) {
-        println("StartupBootstrap running")
         adminService.createAdminUser()
 
         if (bookRepository.count() == 0L) {
+            println("no DB content found. Initializing DB...")
             bookService.addNewBook(
                 title = "Project Hail Mary",
                 author = "Andy Weir",
@@ -69,7 +69,7 @@ class StartupBootstrap(
                 title = "Of Mice And Men",
                 author = "John Steinbeck",
                 description =
-                    "A tale of two brothers searching for jobs during the Great Depression so they can save up " +
+                    "A period piece about two brothers searching for jobs during the Great Depression so they can save up " +
                         "to buy their own farm. ",
             )
             bookService.addNewBook(
@@ -80,6 +80,40 @@ class StartupBootstrap(
                         "While her parents work she explores the old house and everything around, meeting quirky neighbors, " +
                         "and exploring a mysterious dimension hidden underneath the property. ",
             )
+            bookService.addNewBook(
+                title = "The Storyteller",
+                author = "Dave Grohl",
+                description =
+                    "An autobiography by the famous multi-instrumental artist Dave Grohl, who started out as " +
+                        "the drummer for Nirvana, and later started his own band, Foo Fighters. The book holds " +
+                        "fascinating stories of life, death, music and everything therein.",
+            )
+            bookService.addNewBook(
+                title = "The Call Of Cthulhu",
+                author = "H.P. Lovecraft",
+                description =
+                    "A short story by the forefather of everything we today call horror. " +
+                        "An iconic story primarily in four parts, unfolding the terrifying truth of " +
+                        "humanity's insignificance and the unknown horrors that may be lurking under the sea.",
+            )
+            bookService.addNewBook(
+                title = "Dagon",
+                author = "H.P. Lovecraft",
+                description =
+                    "A short story about a man stranded alone on a lifeboat drifting at sea. Eventually " +
+                        "he washes ashore on 'a slimy expanse of hellish black mire'. As he later starts exploring " +
+                        "the island it just gets more and more strange and unsettling. ",
+            )
+            bookService.addNewBook(
+                title = "Mogworld",
+                author = "Ben Croshaw",
+                description =
+                    "A comedic fantasy novel about an undead minion whose only wish is to die. " +
+                        "Seeing as he is undead, his wish to die is quite a tall order. Nonetheless he " +
+                        "strives to fulfil his dream of ending his ceaseless existence by any means necessary.",
+            )
+
+            println("DB init complete.")
         }
     }
 }

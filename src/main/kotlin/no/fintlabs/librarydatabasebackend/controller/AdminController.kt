@@ -2,6 +2,7 @@ package no.fintlabs.librarydatabasebackend.controller
 
 import jakarta.servlet.http.HttpSession
 import jakarta.transaction.Transactional
+import no.fintlabs.librarydatabasebackend.entity.Loan
 import no.fintlabs.librarydatabasebackend.entity.User
 import no.fintlabs.librarydatabasebackend.service.AdminService
 import org.springframework.http.HttpStatus
@@ -74,6 +75,20 @@ class AdminController(
                 ResponseEntity(service.getAllLoans(), HttpStatus.OK)
             }
         )
+    }
+
+    @GetMapping("/getUserLoans")
+    fun getSpecificUserLoans(
+        @RequestBody
+        subjectId: String,
+        session: HttpSession,
+    ): ResponseEntity<List<Loan>> {
+        val userId = session.getAttribute("userId") as UUID
+        return if (!service.validateAdmin(userId)) {
+            ResponseEntity(HttpStatus.UNAUTHORIZED)
+        } else {
+            ResponseEntity.ok().body(service.getSpecificUsersLoans(UUID.fromString(subjectId)))
+        }
     }
 
     @GetMapping("/getAllBooks")
