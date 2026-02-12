@@ -14,7 +14,6 @@ open class User(
     @JsonIgnore
     open var passwordHash: String = "",
     open var admin: Boolean = false,
-    open val loans: MutableList<UUID> = mutableListOf(),
 ) {
     fun makeAdmin() {
         admin = true

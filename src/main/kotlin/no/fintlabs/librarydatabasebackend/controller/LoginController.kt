@@ -84,7 +84,6 @@ class LoginController(
                     admin = false,
                 )
             )
-            println("LoginController.createUser:201 newUser: $newUser.")
             service.registerNew(newUser)
             // After successful create, get new user from repo to include ID in return
             val user = service.getUserByEmail(request.email)

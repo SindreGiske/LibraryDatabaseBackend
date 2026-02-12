@@ -29,7 +29,7 @@ class LoanController(
             val userId = session.getAttribute("userId") as UUID
             val loan = service.registerLoan(bookUUID, userId)
             // Successful loan returns status: 200(OK) with additional information
-            println(" user ${loan.username} loaned ${loan.title} by ${loan.author}")
+            println("LOAN CREATED: ${loan.username} loaned ${loan.title} by ${loan.author}")
             ResponseEntity.ok().build()
         } catch (e: IllegalArgumentException) {
             // Book or User not found returns status: 404(Not Found)
@@ -53,7 +53,6 @@ class LoanController(
         try {
             service.returnBook(loanUUID)
             // Successful return, status 200(OK) with additional information
-            println("LOAN RETURNED: $loanId")
             return ResponseEntity.ok("Book returned successfully!")
         } catch (e: IllegalArgumentException) {
             // Loan not found, returns status 400(Bad Request) with additional information from the service

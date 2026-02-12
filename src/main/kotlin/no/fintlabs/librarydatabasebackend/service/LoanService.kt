@@ -32,7 +32,6 @@ class LoanService(
                 author = book.author,
             )
 
-        user.loans.add(loan.id)
         book.loanBook(loan.id)
         return loanRepository.save(loan)
     }
@@ -49,7 +48,7 @@ class LoanService(
         loan.returnTime = LocalDateTime.now()
         book.returnBook()
 
-        println("user ${loan.username} returned ${loan.title} at ${loan.returnTime}")
+        println("LOAN RETURNED: ${loan.username} returned ${loan.title} at ${loan.returnTime}")
         return loanRepository.save(loan)
     }
 
