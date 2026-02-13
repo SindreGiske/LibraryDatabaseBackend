@@ -23,16 +23,14 @@ class SessionAuthFilter : OncePerRequestFilter() {
         filterChain: FilterChain,
     ) {
         val session = request.getSession(false)
-        val userId = session?.getAttribute("userId")
-        val isAdmin = session.getAttribute("isAdmin") as? Boolean ?: false
 
+        val userId = session?.getAttribute("userId")
         if (userId != null && SecurityContextHolder.getContext().authentication == null) {
-            val authorities =
-                if (isAdmin) {
-                    listOf(SimpleGrantedAuthority("ROLE_ADMIN"))
-                } else {
-                    emptyList()
-                }
+            val isAdmin = session.getAttribute("isAdmin") as? Boolean ?: false
+
+            val authorities = mutableListOf(SimpleGrantedAuthority("ROLE_USER"))
+            if (isAdmin) authorities.add(SimpleGrantedAuthority("ROLE_ADMIN"))
+
             val auth = UsernamePasswordAuthenticationToken(userId.toString(), null, authorities)
 
             SecurityContextHolder.getContext().authentication = auth

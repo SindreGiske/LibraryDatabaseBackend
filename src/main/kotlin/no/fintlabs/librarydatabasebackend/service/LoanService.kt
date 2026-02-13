@@ -46,6 +46,7 @@ class LoanService(
                 ?: throw IllegalArgumentException("Book with ID ${loan.bookId} not found")
 
         loan.returnTime = LocalDateTime.now()
+        loan.active = false
         book.returnBook()
 
         println("LOAN RETURNED: ${loan.username} returned ${loan.title} at ${loan.returnTime}")
