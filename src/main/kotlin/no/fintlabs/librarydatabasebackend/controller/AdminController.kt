@@ -114,10 +114,10 @@ class AdminController(
         }
     }
 
-    @PatchMapping("/addAdmin")
+    @PatchMapping("/addAdmin/{subjectId}")
     @Transactional
     fun setAnotherUserAsAdmin(
-        @RequestBody
+        @PathVariable
         subjectId: String,
         session: HttpSession,
     ): HttpStatus {

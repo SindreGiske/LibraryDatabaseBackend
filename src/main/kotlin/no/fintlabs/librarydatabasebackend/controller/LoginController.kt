@@ -73,7 +73,7 @@ class LoginController(
         @RequestBody request: CreateUserRequest,
         session: HttpSession,
     ): ResponseEntity<Any> =
-        if (service.getUserByEmail(request.email) == null) {
+        if (service.getUserByEmail(request.email) == null && service.getUserByName(request.name) == null) {
             println("LoginController.createUser:201 new user created : ${request.email}.")
             // Successfully created user, returns user(without password) and status:201 (CREATED)
             val newUser: User = (
@@ -95,7 +95,7 @@ class LoginController(
             println("LoginController.createUser:401, ${request.email} failed to create a new user.")
             ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
-                .body("A user with this email already exists.")
+                .body("A user with this mail or username already exists.")
         }
 
     @DeleteMapping("/delete")

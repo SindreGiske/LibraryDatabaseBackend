@@ -24,6 +24,8 @@ class UserService(
 
     fun getUserByEmail(email: String): User? = repository.getUserByEmail(email)
 
+    fun getUserByName(userName: String): User? = repository.getUserByName(userName)
+
     fun registerNew(user: User): User = repository.save(user)
 
     fun deleteUserById(userId: UUID) {

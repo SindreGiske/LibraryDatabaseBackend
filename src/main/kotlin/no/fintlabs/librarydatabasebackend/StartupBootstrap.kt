@@ -148,7 +148,7 @@ class StartupBootstrap(
                 author = "Max Hastings",
                 description =
                     "A book by historian Max Hastings covering the history of World War II. It follows the " +
-                        "military developments of the war but focusing on the reactions and experiences of  different " +
+                        "military developments of the war, but focusing on the reactions and experiences of  different " +
                         "individuals, both uniformed and civilian.",
             )
             bookService.addNewBook(
