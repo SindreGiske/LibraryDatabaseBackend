@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -88,9 +89,9 @@ class AdminController(
         )
     }
 
-    @GetMapping("/getUserLoans")
+    @GetMapping("/getUserLoans/{subjectId}")
     fun getSpecificUserLoans(
-        @RequestBody
+        @PathVariable
         subjectId: String,
         session: HttpSession,
     ): ResponseEntity<List<Loan>> {
@@ -98,7 +99,8 @@ class AdminController(
         return if (!service.validateAdmin(userId)) {
             ResponseEntity(HttpStatus.UNAUTHORIZED)
         } else {
-            ResponseEntity.ok().body(service.getSpecificUsersLoans(UUID.fromString(subjectId)))
+            val loans = service.getSpecificUsersLoans(subjectId)
+            ResponseEntity.ok().body(loans)
         }
     }
 
@@ -116,7 +118,7 @@ class AdminController(
     @Transactional
     fun setAnotherUserAsAdmin(
         @RequestBody
-        subjectId: UUID,
+        subjectId: String,
         session: HttpSession,
     ): HttpStatus {
         val userId = session.getAttribute("userId") as UUID

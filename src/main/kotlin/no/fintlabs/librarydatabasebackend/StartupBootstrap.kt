@@ -112,6 +112,69 @@ class StartupBootstrap(
                         "Seeing as he is undead, his wish to die is quite a tall order. Nonetheless he " +
                         "strives to fulfil his dream of ending his ceaseless existence by any means necessary.",
             )
+            bookService.addNewBook(
+                title = "Dune",
+                author = "Frank Herbert",
+                description =
+                    "An epic science fiction masterpiece fallowing a young noble as his family " +
+                        "takes stewardship of the dangerous planet Arrakis, the sole source of the life-extending " +
+                        "'spice' melange.",
+            )
+            bookService.addNewBook(
+                title = "Moby Dick",
+                author = "Herman Melville",
+                description =
+                    "One of the most iconic books ever written, following a young sailor named Ishmael, " +
+                        "taking part in the manic quest of captain Ahab for vengeance against the titular white whale " +
+                        "that bit his leg off on the ship's previous voyage.",
+            )
+            bookService.addNewBook(
+                title = "Donut Economics",
+                author = "Kate Raworth",
+                description =
+                    "Full title: Donut Economics: Seven Ways To Think Like a 21st-Century Economist. " +
+                        "The book elaborates on her concept of donut economics first developed in her 2012 paper, " +
+                        "'A Safe And Just Space for Humanity'.",
+            )
+            bookService.addNewBook(
+                title = "We Have No Idea!",
+                author = "Jorge Cham & Daniel Whiteson",
+                description =
+                    "A guide to the unknown universe. A book about many of the things we do, " +
+                        "and more importantly don't know about the universe. ",
+            )
+            bookService.addNewBook(
+                title = "All Hell Let Loose",
+                author = "Max Hastings",
+                description =
+                    "A book by historian Max Hastings covering the history of World War II. It follows the " +
+                        "military developments of the war but focusing on the reactions and experiences of  different " +
+                        "individuals, both uniformed and civilian.",
+            )
+            bookService.addNewBook(
+                title = "The Changing World Order",
+                author = "Ray Dalio",
+                description =
+                    "Principles for Dealing with The Changing World Order; Why Nations Succeed and Fail. " +
+                        "The book examines the cyclical patterns underlying the rise and fall of major empires " +
+                        "over the past 500 years.",
+            )
+            bookService.addNewBook(
+                title = "The Shining",
+                author = "Stephen King",
+                description =
+                    "The story centers on a struggling writer and recovering alcoholic who accepts a position " +
+                        "as the off-season caretaker of a historic hotel with his family, including his young son who " +
+                        "possesses an array of psychic abilities which allow him to glimpse the hotel's horrific true nature. ",
+            )
+            bookService.addNewBook(
+                title = "Death",
+                author = "Neil Gaiman",
+                description =
+                    "A brilliant graphic novel following a physical personification of the eternal deity 'DEATH', " +
+                        "on her travels through the mortal plane, guiding people whose lives have run their course to the " +
+                        "afterlife. ",
+            )
 
             println("DB init complete.")
             println("")

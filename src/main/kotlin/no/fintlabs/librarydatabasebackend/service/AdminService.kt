@@ -52,8 +52,8 @@ class AdminService(
 
     fun getAllBooks(): List<Book> = books.getAllBooksAdmin()
 
-    fun addAdmin(userId: UUID): HttpStatus {
-        val user: User? = users.findById(userId)
+    fun addAdmin(userId: String): HttpStatus {
+        val user: User? = users.findById(UUID.fromString(userId))
         if (user == null) {
             return HttpStatus.BAD_REQUEST
         } else if (user.admin) {
@@ -64,7 +64,7 @@ class AdminService(
         }
     }
 
-    fun getSpecificUsersLoans(subjectId: UUID): List<Loan> = loans.getLoansByUser(subjectId)
+    fun getSpecificUsersLoans(subjectId: String): List<Loan> = loans.getLoansByUser(UUID.fromString(subjectId))
 
     @Transactional
     fun createAdminUser() {
